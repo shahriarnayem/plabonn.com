@@ -115,8 +115,8 @@ html.dark {
   }
 
   :focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
+    /* outline: 1px solid var(--accent); */
+    /* outline-offset: 3px; */
   }
 
   input, textarea, select {
@@ -124,6 +124,7 @@ html.dark {
     background: var(--card-soft);
     color: var(--text);
     box-shadow: none;
+    appearance: none;
   }
 
   input:focus, textarea:focus, select:focus {
@@ -197,17 +198,18 @@ html.dark {
   .logo-image { @apply h-[30px] w-auto max-w-[150px] object-contain; }
   .logo-light, .logo-dark { @apply hidden; }
   html.light .logo-light, html.dark .logo-dark { @apply block; }
-  .text-logo { @apply whitespace-nowrap font-bold tracking-[-0.03em]; font-size: 13px; }
+  .text-logo { @apply whitespace-nowrap font-bold tracking-[-0.03em]; font-size: 16px; color: #ffffff; text-transform: lowercase;}
 
   .site-nav { @apply flex items-center gap-1; }
   .site-nav a {
     @apply rounded-md px-2.5 py-2 font-semibold transition-colors duration-150;
     color: var(--text-soft);
-    font-size: 12px;
+    font-size: 16px;
+    color: #adb5bd;
   }
   .site-nav a:hover, .site-nav a.active {
-    background: var(--card-soft);
-    color: var(--text);
+    /* background: var(--card-soft); */
+    color: #ffffff;
   }
   .header-actions { @apply ml-2 flex items-center gap-1.5; }
   .mobile-menu-button { @apply hidden; }
@@ -227,7 +229,7 @@ html.dark {
   .footer-links { @apply flex flex-wrap gap-3.5; }
   .footer-links a, .site-footer p {
     color: var(--text-soft);
-    font-size: 12px;
+    font-size: 16px;
     text-transform: lowercase;
   }
   .site-footer p { @apply m-0; }
