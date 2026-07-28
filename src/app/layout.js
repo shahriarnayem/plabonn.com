@@ -9,15 +9,31 @@ const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-ibm-plex-mono",
   display: "swap",
   preload: true,
-  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+  fallback: [
+    "ui-monospace",
+    "SFMono-Regular",
+    "Menlo",
+    "Monaco",
+    "Consolas",
+    "monospace",
+  ],
 });
 
+function getSiteURL() {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL || process.env.BETTER_AUTH_URL;
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  const candidate = configured || (vercel ? `https://${vercel}` : "http://localhost:3000");
+  try {
+    return new URL(candidate.startsWith("http") ? candidate : `https://${candidate}`);
+  } catch {
+    return new URL("http://localhost:3000");
+  }
+}
 
 export async function generateMetadata() {
   const settings = await getSettings();
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   return {
-    metadataBase: new URL(base),
+    metadataBase: getSiteURL(),
     title: { default: settings.defaultSeoTitle, template: `%s — ${settings.siteName}` },
     description: settings.defaultSeoDescription,
     icons: { icon: settings.favicon || "/favicon.svg" },
@@ -38,7 +54,9 @@ export async function generateMetadata() {
 }
 
 function buildThemeScript(defaultTheme = "system") {
-  const safeDefault = ["light", "dark", "system"].includes(defaultTheme) ? defaultTheme : "system";
+  const safeDefault = ["light", "dark", "system"].includes(defaultTheme)
+    ? defaultTheme
+    : "system";
   return `(function(){try{var t=localStorage.getItem('portfolio-theme')||'${safeDefault}';var d=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=t;document.documentElement.classList.toggle('dark',d);document.documentElement.classList.toggle('light',!d);}catch(e){document.documentElement.classList.add('${safeDefault === "light" ? "light" : "dark"}')}})();`;
 }
 
@@ -47,7 +65,9 @@ export default async function RootLayout({ children }) {
   const themeScript = buildThemeScript(settings.defaultTheme);
   return (
     <html lang="en" suppressHydrationWarning>
-      <head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={`${ibmPlexMono.variable} ${ibmPlexMono.className}`}>
         <a className="skip-link" href="#main">Skip to content</a>
         {children}

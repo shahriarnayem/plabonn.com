@@ -1,6 +1,6 @@
 # Plabonn Portfolio CMS
 
-A full-stack portfolio website rebuilt from the supplied project archive and styled around the supplied four-column bento-grid reference. The public website, CMS dashboard, authentication, content APIs, media library, SEO routes, light/dark themes, and demonstration content are included in one Next.js application.
+A full-stack portfolio and CMS built with Next.js, React, JavaScript, MongoDB, Better Auth and Tailwind CSS.
 
 ## Stack
 
@@ -8,24 +8,35 @@ A full-stack portfolio website rebuilt from the supplied project archive and sty
 - React
 - JavaScript only
 - MongoDB native driver
-- MongoDB GridFS for media
+- MongoDB GridFS media storage
 - Better Auth with Admin and Editor roles
-- Plain global CSS and CSS variables
-- Native SVG icon component
+- Tailwind CSS v4 with PostCSS
+- IBM Plex Mono through `next/font/google`
 
-No Prisma, Mongoose, NextAuth, Tailwind, component framework, state-management library, animation package, or external CMS is used.
+## Design system
+
+The public website and dashboard use one consistent visual system:
+
+- Maximum content width: `1200px`
+- Four-column responsive bento grid
+- Responsive `1x1`, `2x1`, `1x2`, `2x2`, and `4x1` cards
+- Font sizes from `12px` to `32px`
+- Accent color: `#9a000f`
+- Borderless cards, forms, dashboard tables, and modal panels
+- Hover styling only on buttons and navigation controls
+- Light palette: `#F8F9FA`, `#E9ECEF`, `#DEE2E6`, `#CED4DA`, `#ADB5BD`
+- Dark palette: `#6C757D`, `#495057`, `#343A40`, `#212529`
 
 ## Requirements
 
 - Node.js 20.9 or newer
-- A local MongoDB instance or MongoDB Atlas database
+- MongoDB Atlas or a local MongoDB server
 
 ## Local setup
 
 ```bash
-cp .env.example .env
+cp .env.example .env.local
 npm install
-npm run seed:content
 npm run seed:admin
 npm run dev
 ```
@@ -33,24 +44,17 @@ npm run dev
 Open:
 
 - Website: `http://localhost:3000`
-- CMS: `http://localhost:3000/dashboard`
 - Login: `http://localhost:3000/login`
+- CMS: `http://localhost:3000/dashboard`
 
-Set a secure `BETTER_AUTH_SECRET`, database URI, website URL, and administrator credentials in `.env` before seeding.
-
-Development login after running `npm run seed:admin`:
-
-- Email: `admin@portfolio.local`
-- Password: `Admin@12345`
-
-Rerunning `npm run seed:admin` now resets the configured administrator password as well as the role. Change these values before production.
+The site automatically checks MongoDB and inserts any missing built-in pages, navigation, homepage settings and initial CMS content. Running `npm run seed:content` is optional.
 
 ## Environment variables
 
 ```env
-MONGODB_URI=mongodb://127.0.0.1:27017/portfolio_cms
-MONGODB_DB=portfolio_cms
-BETTER_AUTH_SECRET=replace-with-a-long-random-secret-at-least-32-characters
+MONGODB_URI=
+MONGODB_DB=plabonn_portfolio
+BETTER_AUTH_SECRET=
 BETTER_AUTH_URL=http://localhost:3000
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ADMIN_NAME=Site Administrator
@@ -58,14 +62,24 @@ ADMIN_EMAIL=admin@portfolio.local
 ADMIN_PASSWORD=Admin@12345
 ```
 
+For Vercel, set `BETTER_AUTH_URL` and `NEXT_PUBLIC_SITE_URL` to the production domain, for example:
+
+```env
+BETTER_AUTH_URL=https://your-domain.com
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+```
+
+The authentication configuration also supports Vercel preview URLs and derives the current forwarded host safely.
+
 ## Commands
 
 ```bash
 npm run dev
 npm run build
 npm run start
-npm run seed:content
 npm run seed:admin
+npm run seed:content
+npm run auth:check
 ```
 
 ## Public routes
@@ -82,12 +96,13 @@ npm run seed:admin
 - `/privacy`
 - `/terms`
 - `/login`
+- `/<custom-page-slug>`
 
 ## CMS routes
 
 - `/dashboard`
-- `/dashboard/pages`
 - `/dashboard/hero`
+- `/dashboard/pages`
 - `/dashboard/services`
 - `/dashboard/works`
 - `/dashboard/reviews`
@@ -102,58 +117,28 @@ npm run seed:admin
 - `/dashboard/settings`
 - `/dashboard/profile`
 
-## CMS capabilities
+## Automatic database pages
 
-- Create, edit, publish, unpublish, duplicate, search, filter, paginate, reorder, preview, and delete content
-- Structured block editor for pages and articles
-- Homepage content editor
-- Site branding, text logo, image logos, favicon, theme, accent, section order, section visibility, and content-count controls
-- Project, service, testimonial, page, article, category, tag, and navigation management
-- GridFS media uploads, previews, filename editing, alt text, URL copying, search, pagination, and deletion
-- Contact inbox with read/unread state and deletion
-- Admin and Editor role enforcement on the server
-- User creation, role changes, password reset by administrator, suspension, and deletion
-- Activity log and dashboard statistics
+Every built-in public route is represented in the `pages` collection:
 
-## SEO and accessibility
+- Home
+- About
+- Services
+- Works
+- Blog
+- Contact
+- Privacy
+- Terms
 
-- Dynamic metadata and per-content SEO fields
-- Canonical, Open Graph, Twitter card, index/noindex, and follow/nofollow options
-- Dynamic `sitemap.xml` and `robots.txt`
-- Person, ProfessionalService, Service, Article, CreativeWork, and breadcrumb-friendly structure
-- Semantic HTML, keyboard focus, skip link, accessible controls, labels, reduced-motion support, and responsive layouts
+The bootstrap process checks these core records on every fresh server instance without overwriting existing CMS edits. Missing pages are restored with `$setOnInsert`, while edited records remain unchanged.
 
 ## Deployment
 
-The project is configured for a standalone Next.js production build and is suitable for Vercel or a Node.js server. Add the environment variables to the deployment platform, run both seed commands once against the production database, and then deploy.
+1. Push the project to GitHub.
+2. Import it into Vercel.
+3. Add all variables from `.env.example`.
+4. Set `BETTER_AUTH_URL` and `NEXT_PUBLIC_SITE_URL` to the real production URL.
+5. Deploy.
+6. Run `npm run seed:admin` once against the production database from a trusted local environment.
 
-Uploaded files are stored in MongoDB GridFS, not the temporary deployment filesystem.
-
-## Responsive bento aspect ratios
-
-The homepage bento layout does not use fixed pixel card widths or heights. It derives a square grid unit from the actual content-container width with CSS container query units. Desktop uses four columns, tablet uses two columns, and mobile applies direct `aspect-ratio` values for `1x1`, `2x1`, `1x2`, `2x2`, and `4x1` cards.
-
-## Reliable administrator reset
-
-The seed script loads `.env.local` as well as `.env`, recreates the configured administrator through Better Auth, and verifies the password before it reports success.
-
-```bash
-npm run seed:admin
-npm run auth:check
-npm run dev
-```
-
-Default development credentials, unless overridden in `.env.local` or `.env`:
-
-- Email: `admin@portfolio.local`
-- Password: `Admin@12345`
-
-Use the exact login URL printed by `npm run seed:admin`. Open the site using the same hostname (`localhost` or `127.0.0.1`) shown there.
-
-## Automatic database content
-
-On the first successful request with `MONGODB_URI` configured, the app performs a one-time database initialization and inserts any missing default settings, homepage content, navigation, public page records, services, projects, reviews, blog posts, categories and tags. A versioned database marker prevents deleted or edited content from being recreated on later server restarts.
-
-All built-in public pages appear in **Dashboard → Pages**, including Home, About, Services, Works, Blog, Contact, Privacy and Terms. Additional pages created there are available at `/<slug>` and use the same bento visual system.
-
-The global font is IBM Plex Mono through `next/font/google`, and the default accent is `#9a000f`.
+Uploaded images are stored in MongoDB GridFS rather than the temporary deployment filesystem.

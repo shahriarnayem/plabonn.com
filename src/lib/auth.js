@@ -3,18 +3,52 @@ import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { admin } from "better-auth/plugins";
 import { mongoClient, mongoDatabase } from "./mongodb.js";
 
-const baseURL = process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-const trustedOrigins = Array.from(new Set([
-  baseURL,
-  process.env.NEXT_PUBLIC_SITE_URL,
-  process.env.NODE_ENV !== "production" ? "http://localhost:3000" : null,
-  process.env.NODE_ENV !== "production" ? "http://127.0.0.1:3000" : null,
+function normalizeURL(value) {
+  if (!value) return null;
+  try {
+    return new URL(value.startsWith("http") ? value : `https://${value}`);
+  } catch {
+    return null;
+  }
+}
+
+function normalizeOrigin(value) {
+  return normalizeURL(value)?.origin || null;
+}
+
+const configuredOrigin = normalizeOrigin(
+  process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_SITE_URL,
+);
+const productionOrigin = normalizeOrigin(process.env.VERCEL_PROJECT_PRODUCTION_URL);
+const deploymentOrigin = normalizeOrigin(process.env.VERCEL_URL);
+const fallbackOrigin = configuredOrigin || productionOrigin || deploymentOrigin || "http://localhost:3000";
+const allowedHosts = Array.from(new Set([
+  normalizeURL(configuredOrigin)?.host,
+  normalizeURL(productionOrigin)?.host,
+  normalizeURL(deploymentOrigin)?.host,
+  "localhost:*",
+  "127.0.0.1:*",
+  "*.vercel.app",
+].filter(Boolean)));
+
+const defaultTrustedOrigins = Array.from(new Set([
+  fallbackOrigin,
+  configuredOrigin,
+  productionOrigin,
+  deploymentOrigin,
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "https://*.vercel.app",
 ].filter(Boolean)));
 
 export const auth = betterAuth({
   appName: "Portfolio CMS",
-  baseURL,
-  trustedOrigins,
+  baseURL: {
+    allowedHosts,
+    protocol: "auto",
+    fallback: fallbackOrigin,
+  },
+  trustedOrigins: defaultTrustedOrigins,
   secret: process.env.BETTER_AUTH_SECRET || "development-secret-change-this-before-production-123456",
   database: mongodbAdapter(mongoDatabase, { client: mongoClient }),
   emailAndPassword: {

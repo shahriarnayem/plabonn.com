@@ -19,7 +19,7 @@ export default async function ServicesPage() {
       <Breadcrumbs items={[{ label: "Services" }]} />
       <section className="bento-grid page-grid">
         <PageIntroCard eyebrow="Services" title={page?.heading || "Website services built around real business needs."} description={page?.excerpt || "From design and development to optimization and ongoing support, every service is shaped around a clear outcome."} />
-        <article className="card span-2x1 page-note-card"><p className="mini-heading">how it works.</p><BlocksRenderer blocks={page?.blocks || []} /></article>
+        {/* <article className="card span-2x1 page-note-card"><p className="mini-heading">how it works.</p><BlocksRenderer blocks={page?.blocks || []} /></article> */}
         {services.map((service) => <ServiceCard key={service.id || service.slug} service={service} />)}
         <CtaCard homepage={homepage} />
       </section>

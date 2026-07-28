@@ -74,18 +74,17 @@ async function createIndexes(db) {
 async function bootstrapDatabase() {
   const db = await getDb();
   const markerCollection = db.collection("systemMeta");
-  const markerKey = "default-content-v2";
-  const completed = await markerCollection.findOne({ key: markerKey });
-  if (completed) return true;
+  const markerKey = "default-content-v3";
 
+  // Core website records are always checked. This keeps every built-in route
+  // available in MongoDB even when a database was created by an older build,
+  // or an individual collection was removed later.
   await db.collection("siteSettings").updateOne(
     { key: "site" },
     { $setOnInsert: withTimestamps(defaultSettings) },
     { upsert: true },
   );
 
-  // Migrate the earlier project accent to the requested brand red without
-  // overwriting any future custom color selected in the CMS.
   await db.collection("siteSettings").updateOne(
     { key: "site", accentColor: { $in: [null, "", "#d73552", "#b7001e"] } },
     { $set: { accentColor: "#9a000f", updatedAt: new Date() } },
@@ -100,21 +99,28 @@ async function bootstrapDatabase() {
   await Promise.all([
     insertMissing(db.collection("navigation"), navigation, (item) => ({ url: item.url })),
     insertMissing(db.collection("pages"), pages, (item) => ({ slug: item.slug })),
-    insertMissing(db.collection("services"), services, (item) => ({ slug: item.slug })),
-    insertMissing(db.collection("projects"), projects, (item) => ({ slug: item.slug })),
-    insertMissing(db.collection("testimonials"), testimonials, (item) => ({ clientName: item.clientName })),
-    insertMissing(db.collection("posts"), posts, (item) => ({ slug: item.slug })),
-    insertMissing(db.collection("categories"), categories, (item) => ({ scope: item.scope, slug: item.slug })),
-    insertMissing(db.collection("tags"), tags, (item) => ({ slug: item.slug })),
   ]);
-
   await backfillSystemPageFields(db.collection("pages"));
+
+  const completed = await markerCollection.findOne({ key: markerKey });
+  if (!completed) {
+    await Promise.all([
+      insertMissing(db.collection("services"), services, (item) => ({ slug: item.slug })),
+      insertMissing(db.collection("projects"), projects, (item) => ({ slug: item.slug })),
+      insertMissing(db.collection("testimonials"), testimonials, (item) => ({ clientName: item.clientName })),
+      insertMissing(db.collection("posts"), posts, (item) => ({ slug: item.slug })),
+      insertMissing(db.collection("categories"), categories, (item) => ({ scope: item.scope, slug: item.slug })),
+      insertMissing(db.collection("tags"), tags, (item) => ({ slug: item.slug })),
+    ]);
+
+    await markerCollection.updateOne(
+      { key: markerKey },
+      { $set: { key: markerKey, completedAt: new Date(), version: 3 } },
+      { upsert: true },
+    );
+  }
+
   await createIndexes(db);
-  await markerCollection.updateOne(
-    { key: markerKey },
-    { $set: { key: markerKey, completedAt: new Date(), version: 2 } },
-    { upsert: true },
-  );
   return true;
 }
 
