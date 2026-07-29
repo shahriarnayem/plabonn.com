@@ -9,7 +9,8 @@
     "start": "next start -p 3000",
     "seed:admin": "node scripts/seed-admin.js",
     "seed:content": "node scripts/seed-content.js",
-    "auth:check": "node scripts/check-auth.js"
+    "auth:check": "node scripts/check-auth.js",
+    "db:check": "node scripts/check-database.js"
   },
   "dependencies": {
     "@better-auth/mongo-adapter": "^1.6.0",

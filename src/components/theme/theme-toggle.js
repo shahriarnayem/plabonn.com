@@ -7,7 +7,11 @@ const themes = ["light", "dark", "system"];
 
 function applyTheme(theme) {
   const root = document.documentElement;
-  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const isDark =
+    theme === "dark" ||
+    (theme === "system" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
+
   root.dataset.theme = theme;
   root.classList.toggle("dark", isDark);
   root.classList.toggle("light", !isDark);
@@ -21,8 +25,11 @@ export function ThemeToggle({ compact = false, defaultTheme = "system" }) {
     const stored = localStorage.getItem("portfolio-theme") || safeDefault;
     setTheme(stored);
     applyTheme(stored);
+
     const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const listener = () => document.documentElement.dataset.theme === "system" && applyTheme("system");
+    const listener = () =>
+      document.documentElement.dataset.theme === "system" && applyTheme("system");
+
     media.addEventListener("change", listener);
     return () => media.removeEventListener("change", listener);
   }, [safeDefault]);
@@ -35,8 +42,19 @@ export function ThemeToggle({ compact = false, defaultTheme = "system" }) {
   };
 
   return (
-    <button className={`icon-button ${compact ? "compact" : ""}`} type="button" onClick={cycle} aria-label={`Theme: ${theme}. Change theme`} title={`Theme: ${theme}`}>
-      <Icon name={theme === "light" ? "sun" : theme === "dark" ? "moon" : "system"} size={17} />
+    <button
+      className={`inline-grid cursor-pointer place-items-center rounded-lg bg-[var(--card-soft)] text-[var(--text)] transition-colors duration-150 hover:bg-[var(--card-strong)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
+        compact ? "h-8 w-8" : "h-9 w-9"
+      }`}
+      type="button"
+      onClick={cycle}
+      aria-label={`Theme: ${theme}. Change theme`}
+      title={`Theme: ${theme}`}
+    >
+      <Icon
+        name={theme === "light" ? "sun" : theme === "dark" ? "moon" : "system"}
+        size={17}
+      />
     </button>
   );
 }
