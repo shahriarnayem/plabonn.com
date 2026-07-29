@@ -63,11 +63,11 @@ export function clampNumber(value, min, max, fallback = min) {
   return Math.min(max, Math.max(min, number));
 }
 
-export function safeUrl(value = "", { image = false } = {}) {
+export function safeUrl(value = "") {
   const url = String(value || "").trim();
   if (!url) return "";
   if (url.startsWith("/") && !url.startsWith("//")) return url;
-  if (!image && (url.startsWith("#") || url.startsWith("mailto:") || url.startsWith("tel:"))) return url;
+  if (url.startsWith("#") || url.startsWith("mailto:") || url.startsWith("tel:")) return url;
   try {
     const parsed = new URL(url);
     if (["http:", "https:"].includes(parsed.protocol)) return parsed.toString();
@@ -93,7 +93,7 @@ const BLOG_FALLBACK_IMAGES = [
 ];
 
 export function getPostFeaturedImage(post = {}) {
-  const direct = safeUrl(post.coverImage || post.featuredImage || "", { image: true });
+  const direct = String(post.coverImage || post.featuredImage || "").trim();
   if (direct) return direct;
   const key = String(post.slug || post.title || post.id || "post");
   const total = BLOG_FALLBACK_IMAGES.length;

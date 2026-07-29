@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { BlockEditor } from "@/components/dashboard/block-editor";
+import { GalleryUploadField, ImageUploadField } from "@/components/dashboard/image-upload-field";
 import { Icon } from "@/components/icon";
 
 function createInitial(fields) {
   const result = {};
   for (const field of fields) {
     if (field.type === "checkbox") result[field.name] = Boolean(field.defaultValue);
-    else if (field.type === "list" || field.type === "blocks") result[field.name] = [];
+    else if (["list", "blocks", "image-list"].includes(field.type)) result[field.name] = [];
     else result[field.name] = field.defaultValue ?? "";
   }
   return result;
@@ -485,6 +486,27 @@ function EditorField({ field, value, onChange }) {
     );
   }
 
+  if (field.type === "image") {
+    return (
+      <ImageUploadField
+        label={field.label}
+        value={value || ""}
+        onChange={onChange}
+        required={field.required}
+      />
+    );
+  }
+
+  if (field.type === "image-list") {
+    return (
+      <GalleryUploadField
+        label={field.label}
+        value={Array.isArray(value) ? value : []}
+        onChange={onChange}
+      />
+    );
+  }
+
   if (field.type === "textarea") {
     return (
       <label className="grid gap-1.5 sm:col-span-2">
@@ -559,7 +581,7 @@ function EditorField({ field, value, onChange }) {
       </span>
       <input
         className="w-full rounded-[8px] bg-[var(--card)] px-3 py-2.5 text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
-        type={field.type === "slug" ? "text" : field.type === "image" ? "url" : field.type}
+        type={field.type === "slug" ? "text" : field.type}
         value={value ?? ""}
         onChange={(event) =>
           onChange(

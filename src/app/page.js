@@ -51,17 +51,9 @@ export default async function HomePage() {
           <HeroHeadingCard hero={homepage.hero} />
           <ProfileImageCard hero={homepage.hero} />
           <AboutSummaryCard about={homepage.about} />
-          <TechCard
-            name="wordpress"
-            label="WordPress"
-            href="/services#wordpress-development"
-          />
-          <TechCard
-            name="elementor"
-            label="Elementor"
-            href="/services#elementor-website-design"
-          />
-          <TechCard name="crocoblock" label="Crocoblock" href="/services" />
+          {(homepage.techCards || []).slice(0, 3).map((card) => (
+            <TechCard key={card.id || card.label} card={card} />
+          ))}
         </section>
       ),
     works:

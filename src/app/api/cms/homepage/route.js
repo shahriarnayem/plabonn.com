@@ -5,9 +5,29 @@ import { getDb, serializeDocument } from "@/lib/mongodb";
 import { defaultHomepage } from "@/lib/data/demo-data";
 import { normalizeArray, safeJson, safeUrl } from "@/lib/utils";
 
+function imageValue(value = "") {
+  return String(value || "").trim().slice(0, 1000);
+}
+
+function mergeHomepage(item = {}) {
+  const storedTechCards = Array.isArray(item.techCards) ? item.techCards : [];
+  return {
+    ...defaultHomepage,
+    ...item,
+    hero: { ...defaultHomepage.hero, ...(item.hero || {}) },
+    about: { ...defaultHomepage.about, ...(item.about || {}) },
+    techCards: defaultHomepage.techCards.map((fallback, index) => ({
+      ...fallback,
+      ...(storedTechCards[index] || {}),
+    })),
+  };
+}
+
 function normalize(input = {}) {
   const hero = safeJson(input.hero, input.hero || {});
   const about = safeJson(input.about, input.about || {});
+  const rawTechCards = Array.isArray(input.techCards) ? input.techCards : [];
+
   return {
     hero: {
       eyebrow: String(hero.eyebrow || "").trim(),
@@ -16,9 +36,21 @@ function normalize(input = {}) {
       ctaText: String(hero.ctaText || "").trim(),
       ctaUrl: safeUrl(hero.ctaUrl),
       availability: String(hero.availability || "").trim(),
-      image: safeUrl(hero.image, { image: true }),
+      image: imageValue(hero.image),
       imageAlt: String(hero.imageAlt || "").trim(),
     },
+    techCards: defaultHomepage.techCards.map((fallback, index) => {
+      const card = rawTechCards[index] || fallback;
+      return {
+        id: String(card.id || fallback.id).trim().slice(0, 80),
+        label: String(card.label || fallback.label).trim().slice(0, 120),
+        image: imageValue(card.image || fallback.image),
+        imageAlt: String(card.imageAlt || card.label || fallback.imageAlt)
+          .trim()
+          .slice(0, 300),
+        href: safeUrl(card.href || fallback.href),
+      };
+    }),
     about: {
       label: String(about.label || "").trim(),
       bio: String(about.bio || "").trim(),
@@ -42,29 +74,58 @@ function normalize(input = {}) {
 
 export async function GET(request) {
   const session = await getApiSession(request);
-  if (!isEditorSession(session)) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  if (!isEditorSession(session)) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const db = await getDb();
     const item = await db.collection("homepage").findOne({ key: "homepage" });
-    return NextResponse.json({ item: serializeDocument(item) || defaultHomepage });
+    return NextResponse.json({ item: mergeHomepage(serializeDocument(item) || {}) });
   } catch {
-    return NextResponse.json({ item: defaultHomepage });
+    return NextResponse.json({ item: mergeHomepage() });
   }
 }
 
 export async function PUT(request) {
   const session = await getApiSession(request);
-  if (!isEditorSession(session)) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  if (!isEditorSession(session)) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   let body;
-  try { body = await request.json(); } catch { return NextResponse.json({ message: "Invalid JSON" }, { status: 400 }); }
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ message: "Invalid JSON" }, { status: 400 });
+  }
+
   const payload = normalize(body);
+
   try {
     const db = await getDb();
-    await db.collection("homepage").updateOne({ key: "homepage" }, { $set: payload, $setOnInsert: { key: "homepage", createdAt: new Date() } }, { upsert: true });
-    await db.collection("activityLogs").insertOne({ action: "UPDATE", resource: "homepage", label: "Homepage content", userId: session.user.id, userName: session.user.name, createdAt: new Date() });
+    await db.collection("homepage").updateOne(
+      { key: "homepage" },
+      {
+        $set: payload,
+        $setOnInsert: { key: "homepage", createdAt: new Date() },
+      },
+      { upsert: true },
+    );
+    await db.collection("activityLogs").insertOne({
+      action: "UPDATE",
+      resource: "homepage",
+      label: "Homepage content",
+      userId: session.user.id,
+      userName: session.user.name,
+      createdAt: new Date(),
+    });
     revalidatePath("/");
     return NextResponse.json({ message: "Homepage content saved." });
   } catch {
-    return NextResponse.json({ message: "Homepage content could not be saved." }, { status: 500 });
+    return NextResponse.json(
+      { message: "Homepage content could not be saved." },
+      { status: 500 },
+    );
   }
 }

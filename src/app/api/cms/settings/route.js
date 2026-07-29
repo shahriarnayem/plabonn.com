@@ -5,14 +5,18 @@ import { getDb, serializeDocument } from "@/lib/mongodb";
 import { defaultSettings } from "@/lib/data/demo-data";
 import { normalizeArray, safeHexColor, safeJson, safeUrl } from "@/lib/utils";
 
+function imageValue(value = "") {
+  return String(value || "").trim().slice(0, 1000);
+}
+
 function normalize(input = {}) {
   return {
     siteName: String(input.siteName || "").trim(),
     textLogo: String(input.textLogo || "").trim(),
-    logoImage: safeUrl(input.logoImage, { image: true }),
-    lightLogo: safeUrl(input.lightLogo, { image: true }),
-    darkLogo: safeUrl(input.darkLogo, { image: true }),
-    favicon: safeUrl(input.favicon, { image: true }) || "/favicon.svg",
+    logoImage: imageValue(input.logoImage),
+    lightLogo: imageValue(input.lightLogo),
+    darkLogo: imageValue(input.darkLogo),
+    favicon: imageValue(input.favicon) || "/favicon.svg",
     defaultTheme: ["light", "dark", "system"].includes(input.defaultTheme) ? input.defaultTheme : "system",
     accentColor: safeHexColor(input.accentColor, "#9a000f"),
     contactEmail: String(input.contactEmail || "").trim(),
@@ -29,7 +33,7 @@ function normalize(input = {}) {
     maintenanceMode: Boolean(input.maintenanceMode),
     defaultSeoTitle: String(input.defaultSeoTitle || "").trim(),
     defaultSeoDescription: String(input.defaultSeoDescription || "").trim(),
-    defaultSocialImage: safeUrl(input.defaultSocialImage, { image: true }),
+    defaultSocialImage: imageValue(input.defaultSocialImage),
     updatedAt: new Date(),
   };
 }

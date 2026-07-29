@@ -2,6 +2,7 @@
 
 import { cloneElement, useEffect, useState } from "react";
 import { Icon } from "@/components/icon";
+import { ImageUploadField } from "@/components/dashboard/image-upload-field";
 
 export function HomepageEditor() {
   const [form, setForm] = useState(null);
@@ -34,6 +35,15 @@ export function HomepageEditor() {
     }
   };
 
+  const updateTechCard = (index, key, value) => {
+    setForm((current) => ({
+      ...current,
+      techCards: (current.techCards || []).map((card, cardIndex) =>
+        cardIndex === index ? { ...card, [key]: value } : card,
+      ),
+    }));
+  };
+
   async function save(event) {
     event.preventDefault();
     setSaving(true);
@@ -58,7 +68,7 @@ export function HomepageEditor() {
             Homepage
           </h1>
           <p className="mt-2 max-w-[720px] text-sm text-[var(--text-soft)]">
-            Edit every heading, paragraph, button and profile detail used in the homepage grid.
+            Edit homepage copy, portrait and full-image technology cards from one screen.
           </p>
         </div>
         <a
@@ -126,19 +136,71 @@ export function HomepageEditor() {
               onChange={(event) => update("hero.availability", event.target.value)}
             />
           </Field>
-          <Field label="Portrait image URL">
-            <input
-              type="url"
-              value={form.hero?.image || ""}
-              onChange={(event) => update("hero.image", event.target.value)}
-            />
-          </Field>
+          <ImageUploadField
+            label="Portrait image"
+            value={form.hero?.image || ""}
+            alt={form.hero?.imageAlt || ""}
+            onChange={(value) => update("hero.image", value)}
+            previewClassName="aspect-square"
+          />
           <Field label="Portrait alt text" wide>
             <input
               value={form.hero?.imageAlt || ""}
               onChange={(event) => update("hero.imageAlt", event.target.value)}
             />
           </Field>
+        </SettingsGroup>
+
+        <SettingsGroup
+          title="Hero technology images"
+          description="Each card is a full image, just like the portrait card. Upload an image and set its accessible label and destination."
+        >
+          {(form.techCards || []).slice(0, 3).map((card, index) => (
+            <div
+              className="grid gap-4 rounded-[10px] bg-[var(--card-soft)] p-4 sm:col-span-2"
+              key={card.id || index}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <strong className="text-sm">Technology card {index + 1}</strong>
+                <span className="text-xs text-[var(--text-faint)]">
+                  {card.label || "Untitled"}
+                </span>
+              </div>
+              <ImageUploadField
+                label="Card image"
+                value={card.image || ""}
+                alt={card.imageAlt || card.label || ""}
+                onChange={(value) => updateTechCard(index, "image", value)}
+                previewClassName="aspect-square"
+              />
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Label">
+                  <input
+                    value={card.label || ""}
+                    onChange={(event) =>
+                      updateTechCard(index, "label", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Destination link">
+                  <input
+                    value={card.href || ""}
+                    onChange={(event) =>
+                      updateTechCard(index, "href", event.target.value)
+                    }
+                  />
+                </Field>
+                <Field label="Image alt text" wide>
+                  <input
+                    value={card.imageAlt || ""}
+                    onChange={(event) =>
+                      updateTechCard(index, "imageAlt", event.target.value)
+                    }
+                  />
+                </Field>
+              </div>
+            </div>
+          ))}
         </SettingsGroup>
 
         <SettingsGroup

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">WordPress</title>
+  <desc id="desc">WordPress technology card artwork</desc>
+  <rect width="800" height="800" fill="#dceff6"/>
+  <circle cx="640" cy="145" r="210" fill="#c4e3ef"/>
+  <circle cx="150" cy="690" r="230" fill="#bddfeb"/>
+  <circle cx="400" cy="350" r="190" fill="#ffffff" opacity=".9"/>
+  <circle cx="400" cy="350" r="146" fill="none" stroke="#16759a" stroke-width="25"/>
+  <path d="M278 262h60l82 222 42-111-38-111h61l86 222 62-163c15-42 5-75-22-93 56 2 99 44 99 101 0 25-8 53-20 84L606 619H531l-67-174-67 174h-77L278 262Z" fill="#16759a"/>
+  <text x="400" y="680" text-anchor="middle" font-family="Arial, sans-serif" font-size="58" font-weight="700" fill="#164c63">WORDPRESS</text>
+</svg>

@@ -1,5 +1,4 @@
 import { PublicShell } from "@/components/layout/public-shell";
-import { Breadcrumbs } from "@/components/content/breadcrumbs";
 import { PageIntroCard } from "@/components/cards/portfolio-cards";
 import { ContactForm } from "@/components/forms/contact-form";
 import { Icon } from "@/components/icon";
@@ -31,9 +30,9 @@ export default async function ContactPage({ searchParams }) {
 
   return (
     <PublicShell>
-      <Breadcrumbs items={[{ label: "Contact" }]} />
-      <section className="mb-[14px] grid grid-flow-dense grid-cols-1 gap-[14px] sm:grid-cols-2 sm:auto-rows-[calc(50cqw_-_7px)] lg:grid-cols-4 lg:auto-rows-[calc(25cqw_-_10.5px)]">
+      <section className="mb-[14px] grid grid-flow-dense grid-cols-1 items-stretch gap-[14px] sm:grid-cols-2 lg:grid-cols-4">
         <PageIntroCard
+          className="col-span-1 min-h-[280px] sm:col-span-2"
           eyebrow="Contact"
           title={page?.heading || "Tell me what you are planning."}
           description={
@@ -42,12 +41,8 @@ export default async function ContactPage({ searchParams }) {
           }
         />
 
-        <aside className="relative col-span-1 row-span-1 grid min-w-0 grid-cols-1 content-center gap-5 overflow-hidden rounded-[12px] bg-[var(--card)] p-6 sm:col-span-2 sm:grid-cols-2">
-          <div className="grid grid-cols-[24px_1fr] gap-x-3 gap-y-1">
-            <span className="row-span-2 text-[var(--accent)]">
-              <Icon name="mail" size={20} />
-            </span>
-            <span className="text-xs uppercase text-[var(--text-faint)]">Email</span>
+        <aside className="relative col-span-1 flex flex-row flex-wrap min-h-[280px] min-w-0 grid-cols-1 content-center gap-5 overflow-hidden rounded-[12px] bg-[var(--card)] p-6 sm:col-span-2 sm:grid-cols-2">
+          <div className="">
             <a
               className="break-all text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
               href={`mailto:${settings.contactEmail}`}
@@ -55,12 +50,16 @@ export default async function ContactPage({ searchParams }) {
               {settings.contactEmail}
             </a>
           </div>
+          <div className="">
+            <a
+              className="break-all text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+              href={`mailto:plabonn.com@gmail.com`}
+            >
+              plabonn.com@gmail.com
+            </a>
+          </div>
           {settings.phone ? (
-            <div className="grid grid-cols-[24px_1fr] gap-x-3 gap-y-1">
-              <span className="row-span-2 text-[var(--accent)]">
-                <Icon name="phone" size={20} />
-              </span>
-              <span className="text-xs uppercase text-[var(--text-faint)]">Phone</span>
+            <div className="">
               <a
                 className="text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
                 href={`tel:${settings.phone}`}
@@ -70,24 +69,19 @@ export default async function ContactPage({ searchParams }) {
             </div>
           ) : null}
           {settings.location ? (
-            <div className="grid grid-cols-[24px_1fr] gap-x-3 gap-y-1">
-              <span className="row-span-2 text-[var(--accent)]">
-                <Icon name="location" size={20} />
-              </span>
-              <span className="text-xs uppercase text-[var(--text-faint)]">Location</span>
-              <strong className="text-sm">{settings.location}</strong>
+            <div className="">
+              <strong className="text-[14px]">{settings.location}</strong>
             </div>
           ) : null}
-          <div className="grid grid-cols-[24px_1fr] gap-x-3 gap-y-1">
-            <i className="row-span-2 mt-1 h-[7px] w-[7px] rounded-full bg-[var(--success)]" />
-            <span className="text-xs uppercase text-[var(--text-faint)]">Availability</span>
-            <strong className="text-sm">Open for selected projects</strong>
-          </div>
+            <div className="">
+              <strong className="text-[14px]">gtm 6+</strong>
+            </div>
         </aside>
 
-        <article className="relative col-span-1 row-span-1 min-w-0 overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(22px,4vw,44px)] sm:col-span-2 lg:col-span-4">
-          <ContactForm services={services} defaultService={params?.service || ""} />
-        </article>
+      </section>
+
+      <section className="mb-[14px] w-full overflow-visible rounded-[12px] bg-[var(--card)] p-[clamp(22px,4vw,44px)]" aria-label="Project enquiry form">
+        <ContactForm services={services} defaultService={params?.service || ""} />
       </section>
     </PublicShell>
   );

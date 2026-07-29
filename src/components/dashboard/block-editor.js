@@ -2,6 +2,7 @@
 
 import { cloneElement } from "react";
 import { Icon } from "@/components/icon";
+import { GalleryUploadField, ImageUploadField } from "@/components/dashboard/image-upload-field";
 
 const blockTypes = [
   "heading",
@@ -211,25 +212,27 @@ function BlockFields({ block, onChange }) {
 
     case "image":
       return (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="Image URL">
-            <input
-              value={data.url || ""}
-              onChange={(event) => set("url", event.target.value)}
-            />
-          </Field>
-          <Field label="Alt text">
-            <input
-              value={data.alt || ""}
-              onChange={(event) => set("alt", event.target.value)}
-            />
-          </Field>
-          <Field label="Caption" wide>
-            <input
-              value={data.caption || ""}
-              onChange={(event) => set("caption", event.target.value)}
-            />
-          </Field>
+        <div className="grid gap-4">
+          <ImageUploadField
+            label="Image"
+            value={data.url || ""}
+            alt={data.alt || ""}
+            onChange={(value) => set("url", value)}
+          />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Field label="Alt text">
+              <input
+                value={data.alt || ""}
+                onChange={(event) => set("alt", event.target.value)}
+              />
+            </Field>
+            <Field label="Caption">
+              <input
+                value={data.caption || ""}
+                onChange={(event) => set("caption", event.target.value)}
+              />
+            </Field>
+          </div>
         </div>
       );
 
@@ -373,15 +376,11 @@ function BlockFields({ block, onChange }) {
 
     case "gallery":
       return (
-        <Field label="Image URLs, one per line">
-          <textarea
-            rows="6"
-            value={(data.images || []).join("\n")}
-            onChange={(event) =>
-              set("images", event.target.value.split("\n").filter(Boolean))
-            }
-          />
-        </Field>
+        <GalleryUploadField
+          label="Gallery images"
+          value={data.images || []}
+          onChange={(images) => set("images", images)}
+        />
       );
 
     case "cta":

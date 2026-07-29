@@ -2,6 +2,7 @@
 
 import { cloneElement, useEffect, useState } from "react";
 import { Icon } from "@/components/icon";
+import { ImageUploadField } from "@/components/dashboard/image-upload-field";
 
 export function SettingsEditor({ mode = "general", canEdit = true }) {
   const [form, setForm] = useState(null);
@@ -99,15 +100,12 @@ export function SettingsEditor({ mode = "general", canEdit = true }) {
                   }
                 />
               </Field>
-              <Field label="Default social image URL" wide>
-                <input
-                  type="url"
-                  value={form.defaultSocialImage || ""}
-                  onChange={(event) =>
-                    set("defaultSocialImage", event.target.value)
-                  }
-                />
-              </Field>
+              <ImageUploadField
+                label="Default social image"
+                value={form.defaultSocialImage || ""}
+                onChange={(value) => set("defaultSocialImage", value)}
+                previewClassName="aspect-[16/9]"
+              />
             </Group>
 
             <Group
@@ -153,33 +151,30 @@ export function SettingsEditor({ mode = "general", canEdit = true }) {
                   onChange={(event) => set("textLogo", event.target.value)}
                 />
               </Field>
-              <Field label="Logo image URL">
-                <input
-                  type="url"
-                  value={form.logoImage || ""}
-                  onChange={(event) => set("logoImage", event.target.value)}
-                />
-              </Field>
-              <Field label="Light logo URL">
-                <input
-                  type="url"
-                  value={form.lightLogo || ""}
-                  onChange={(event) => set("lightLogo", event.target.value)}
-                />
-              </Field>
-              <Field label="Dark logo URL">
-                <input
-                  type="url"
-                  value={form.darkLogo || ""}
-                  onChange={(event) => set("darkLogo", event.target.value)}
-                />
-              </Field>
-              <Field label="Favicon URL">
-                <input
-                  value={form.favicon || ""}
-                  onChange={(event) => set("favicon", event.target.value)}
-                />
-              </Field>
+              <ImageUploadField
+                label="Logo image"
+                value={form.logoImage || ""}
+                onChange={(value) => set("logoImage", value)}
+                previewClassName="aspect-[3/1]"
+              />
+              <ImageUploadField
+                label="Light logo"
+                value={form.lightLogo || ""}
+                onChange={(value) => set("lightLogo", value)}
+                previewClassName="aspect-[3/1]"
+              />
+              <ImageUploadField
+                label="Dark logo"
+                value={form.darkLogo || ""}
+                onChange={(value) => set("darkLogo", value)}
+                previewClassName="aspect-[3/1]"
+              />
+              <ImageUploadField
+                label="Favicon"
+                value={form.favicon || ""}
+                onChange={(value) => set("favicon", value)}
+                previewClassName="aspect-square max-w-[180px]"
+              />
               <Field label="Accent color">
                 <input
                   className="h-[42px] cursor-pointer p-1"

@@ -122,6 +122,17 @@ async function bootstrapDatabase() {
     { upsert: true },
   );
 
+  await db.collection("homepage").updateOne(
+    {
+      key: "homepage",
+      $or: [
+        { techCards: { $exists: false } },
+        { techCards: { $size: 0 } },
+      ],
+    },
+    { $set: { techCards: defaultHomepage.techCards, updatedAt: new Date() } },
+  );
+
   await Promise.all([
     insertMissing(db.collection("navigation"), navigation, (item) => ({ url: item.url })),
     insertMissing(db.collection("pages"), pages, (item) => ({ slug: item.slug })),

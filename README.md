@@ -157,3 +157,5 @@ The bootstrap also ensures the homepage settings, navigation, initial services, 
 9. Run `npm run seed:admin` locally with the production environment variables once.
 
 Uploaded images are stored in MongoDB GridFS and not on Vercel’s temporary filesystem.
+
+All CMS image fields are upload-only. The homepage technology cards use full-bleed images and are editable from **Dashboard → Hero**. Image URL text fields and image-specific URL validation are not used.

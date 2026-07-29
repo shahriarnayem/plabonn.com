@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Crocoblock</title>
+  <desc id="desc">Crocoblock technology card artwork</desc>
+  <rect width="800" height="800" fill="#e9e8fb"/>
+  <path d="M0 620 340 280l180 180 280-280v620H0Z" fill="#dad7f7"/>
+  <circle cx="180" cy="160" r="120" fill="#d0cdf5"/>
+  <rect x="208" y="174" width="384" height="352" rx="64" fill="#ffffff" opacity=".94"/>
+  <path d="M301 302c0-48 39-87 87-87h36c39 0 74 26 84 64l-61 18a28 28 0 0 0-27-20h-31a27 27 0 0 0-27 27v96a27 27 0 0 0 27 27h31a28 28 0 0 0 27-20l61 18c-10 38-45 64-84 64h-36c-48 0-87-39-87-87v-100Z" fill="#5d55c7"/>
+  <text x="400" y="680" text-anchor="middle" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#403a91">CROCOBLOCK</text>
+</svg>

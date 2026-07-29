@@ -46,7 +46,27 @@ export async function getSettings() {
 export async function getHomepage() {
   return safeCollection(
     "homepage",
-    async (collection) => serializeDocument(await collection.findOne({ key: "homepage" })) || defaultHomepage,
+    async (collection) => {
+      const item = serializeDocument(
+        await collection.findOne({ key: "homepage" }),
+      );
+      if (!item) return defaultHomepage;
+
+      const storedTechCards = Array.isArray(item.techCards)
+        ? item.techCards
+        : [];
+
+      return {
+        ...defaultHomepage,
+        ...item,
+        hero: { ...defaultHomepage.hero, ...(item.hero || {}) },
+        about: { ...defaultHomepage.about, ...(item.about || {}) },
+        techCards: defaultHomepage.techCards.map((fallback, index) => ({
+          ...fallback,
+          ...(storedTechCards[index] || {}),
+        })),
+      };
+    },
     defaultHomepage,
   );
 }

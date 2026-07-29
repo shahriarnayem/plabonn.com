@@ -99,10 +99,7 @@ export function MediaManager() {
     if (response.ok) load();
   }
 
-  async function copy(url) {
-    await navigator.clipboard.writeText(url);
-    setNotice({ type: "success", message: "Media URL copied." });
-  }
+
 
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
@@ -116,7 +113,7 @@ export function MediaManager() {
           Media
         </h1>
         <p className="mt-2 max-w-[720px] text-sm text-[var(--text-soft)]">
-          Upload images to MongoDB GridFS and reuse their URLs throughout the CMS.
+          Upload images to MongoDB GridFS and select them directly inside CMS image fields.
         </p>
       </div>
 
@@ -236,14 +233,6 @@ export function MediaManager() {
                     title="Edit details"
                   >
                     <Icon name="edit" size={15} />
-                  </button>
-                  <button
-                    className="inline-flex min-h-[34px] cursor-pointer items-center justify-center gap-2 rounded-[7px] bg-[var(--card-soft)] px-3 text-xs font-bold uppercase transition-colors duration-150 hover:bg-[var(--card-strong)]"
-                    onClick={() => copy(url)}
-                    type="button"
-                  >
-                    <Icon name="copy" size={14} />
-                    Copy URL
                   </button>
                   <button
                     className="inline-grid h-8 w-8 cursor-pointer place-items-center rounded-lg bg-[var(--card-soft)] text-[var(--danger)] transition-colors duration-150 hover:bg-[var(--card-soft)]"

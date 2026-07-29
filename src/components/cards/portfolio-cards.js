@@ -113,24 +113,24 @@ export function AboutSummaryCard({ about }) {
   );
 }
 
-export function TechCard({ name, label, href }) {
-  const iconColor =
-    name === "wordpress"
-      ? "text-[#0588bb]"
-      : name === "elementor"
-        ? "text-[#ec4ec7]"
-        : "text-[#4c74f0]";
+export function TechCard({ card = {} }) {
+  const image = card.image || "/placeholders/tech-wordpress.svg";
+  const label = card.label || "Technology";
 
   return (
     <Link
-      href={href || "/services"}
-      className={`relative col-span-1 row-span-1 flex min-h-[220px] min-w-0 flex-col items-center justify-center gap-[16px] overflow-hidden rounded-[12px] bg-[var(--card)] p-5 text-[14px] font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${iconColor}`}
-      aria-label={`${label} services`}
+      href={card.href || "/services"}
+      className="relative col-span-1 row-span-1 aspect-square min-w-0 overflow-hidden rounded-[12px] bg-[var(--card-soft)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:aspect-auto"
+      aria-label={label}
     >
-      <span className="grid h-[54px] w-[54px] place-items-center">
-        <Icon name={name} size={48} />
-      </span>
-      <span className="leading-none text-[var(--text)]">{label}</span>
+      <img
+        className="h-full w-full object-cover"
+        src={image}
+        alt={card.imageAlt || label}
+        width="900"
+        height="900"
+        loading="eager"
+      />
     </Link>
   );
 }
@@ -254,11 +254,11 @@ export function BlogCard({ post }) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className=" gap-4 p-2 relative col-span-1 row-span-1 flex h-full min-h-[264px] min-w-0 flex-col overflow-hidden rounded-[12px] bg-[var(--card)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+      className="p-2 relative col-span-1 row-span-1 flex h-full min-h-[264px] min-w-0 flex-col overflow-hidden rounded-[12px] bg-[var(--card)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
     >
-      <div className="w-full overflow-hidden bg-[var(--card-soft)]">
+      <div className="rounded-[4px] h-[156px] w-full overflow-hidden bg-[var(--card-soft)]">
         <img
-          className="h-full w-full object-cover rounded-[4px]"
+          className="h-full w-full object-cover"
           src={image}
           alt={post.title}
           width="1200"
@@ -266,9 +266,9 @@ export function BlogCard({ post }) {
           loading="lazy"
         />
       </div>
-      <div className="flex-1 content-between">
+      <div className="grid min-h-[108px] flex-1 content-between gap-2.5 p-2">
         <p
-          className="lowercase mx-2 overflow-hidden text-[18px] font-semibold leading-[1.45]"
+          className="m-0 overflow-hidden text-[18px] font-semibold lowercase leading-[1.45]"
           style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
         >
           {post.title}
@@ -311,11 +311,11 @@ export function ServiceCard({ service }) {
 
 export function StatCard({ value, label }) {
   return (
-    <article className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-center overflow-hidden rounded-[12px] bg-[var(--card)] p-6">
-      <strong className="text-[clamp(24px,3vw,32px)] leading-[1.16] tracking-[-0.03em]">
+    <article className="gap-4 relative col-span-1 row-span-1 flex min-w-0 flex-col justify-center overflow-hidden rounded-[12px] bg-[var(--card)] p-6">
+      <strong className="text-[clamp(20px,3vw,28px)] leading-[1.16] tracking-[-0.03em]">
         {value}
       </strong>
-      <span className="text-xs text-[var(--text-soft)]">{label}</span>
+      <span className="text-[14px] text-[var(--text-soft)]">{label}</span>
     </article>
   );
 }
@@ -324,23 +324,18 @@ export function PageIntroCard({
   eyebrow,
   title,
   description,
-  className = "col-span-1 row-span-1 sm:col-span-2",
+  className = "col-span-1 row-span-1 sm:col-span-4",
 }) {
   return (
     <article
-      className={`relative flex min-w-0 flex-col justify-between overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(22px,3vw,34px)] ${className}`}
+      className={`relative flex min-w-0 flex-col justify-center items-center overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(20px,3vw,28px)] ${className}`}
     >
-      {eyebrow ? (
-        <p className="mb-3 text-xs font-bold uppercase tracking-[0.04em] text-[var(--text-soft)]">
-          {eyebrow}
-        </p>
-      ) : null}
-      <h1 className="mb-3.5 max-w-[850px] text-[clamp(24px,4vw,32px)] font-bold uppercase leading-[1.16] tracking-[-0.03em]">
+      <h1 className="text-center mb-3.5 max-w-[850px] text-[clamp(20px,4vw,28px)] font-bold uppercase leading-[1.16] tracking-[-0.03em]">
         {title}
       </h1>
-      {description ? (
-        <p className="max-w-[70ch] text-sm text-[var(--text-soft)]">{description}</p>
-      ) : null}
+      {/* {description ? (
+        <p className="text-center max-w-[70ch] text-[14px] text-[var(--text-soft)]">{description}</p>
+      ) : null} */}
     </article>
   );
 }

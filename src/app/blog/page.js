@@ -30,7 +30,7 @@ export default async function BlogPage({ searchParams }) {
   const tag = params?.tag || "";
   const search = params?.search || "";
   const page = Math.max(1, Number(params?.page) || 1);
-  const limit = 10;
+  const limit = 12;
 
   const [posts, featuredPosts, categories, tags, total, pageContent] =
     await Promise.all([
@@ -51,7 +51,7 @@ export default async function BlogPage({ searchParams }) {
 
   return (
     <PublicShell>
-      <Breadcrumbs items={[{ label: "Blog" }]} />
+      {/* <Breadcrumbs items={[{ label: "Blog" }]} /> */}
       <section className="mb-[14px] grid grid-flow-dense grid-cols-1 gap-[14px] sm:grid-cols-2 sm:auto-rows-[calc(50cqw_-_7px)] lg:grid-cols-4 lg:auto-rows-[calc(25cqw_-_10.5px)]">
         <PageIntroCard
           eyebrow="Blog"
@@ -65,7 +65,7 @@ export default async function BlogPage({ searchParams }) {
           }
         />
 
-        <article className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-center gap-[18px] overflow-hidden rounded-[12px] bg-[var(--card)] p-5 sm:col-span-2">
+        {/* <article className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-center gap-[18px] overflow-hidden rounded-[12px] bg-[var(--card)] p-5 sm:col-span-2">
           <form
             className="grid grid-cols-1 items-end gap-2.5 sm:grid-cols-[minmax(0,1fr)_auto]"
             action="/blog"
@@ -114,9 +114,9 @@ export default async function BlogPage({ searchParams }) {
               </Link>
             ))}
           </div>
-        </article>
+        </article> */}
 
-        {featured ? (
+        {/* {featured ? (
           <Link
             href={`/blog/${featured.slug}`}
             className="relative col-span-1 row-span-1 grid min-h-[260px] min-w-0 grid-cols-1 overflow-hidden rounded-[12px] bg-[var(--card)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:col-span-2 lg:col-span-4 lg:grid-cols-[1fr_300px]"
@@ -145,7 +145,7 @@ export default async function BlogPage({ searchParams }) {
               />
             </div>
           </Link>
-        ) : null}
+        ) : null} */}
 
         {posts.length ? (
           posts.map((post) => <BlogCard key={post.id || post.slug} post={post} />)
@@ -158,7 +158,7 @@ export default async function BlogPage({ searchParams }) {
           </article>
         )}
 
-        <aside className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-center overflow-hidden rounded-[12px] bg-[var(--card)] p-6 sm:col-span-2">
+        {/* <aside className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-center overflow-hidden rounded-[12px] bg-[var(--card)] p-6 sm:col-span-2">
           <p className="mb-3 text-xs font-bold lowercase tracking-[0.04em]">
             browse by tag.
           </p>
@@ -177,7 +177,7 @@ export default async function BlogPage({ searchParams }) {
               </Link>
             ))}
           </div>
-        </aside>
+        </aside> */}
       </section>
 
       {totalPages > 1 ? (

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { PublicShell } from "@/components/layout/public-shell";
-import { Breadcrumbs } from "@/components/content/breadcrumbs";
 import { PageIntroCard, ProjectCard } from "@/components/cards/portfolio-cards";
 import {
   getCategories,
@@ -42,7 +41,6 @@ export default async function WorksPage({ searchParams }) {
 
   return (
     <PublicShell>
-      <Breadcrumbs items={[{ label: "Works" }]} />
       <section className="mb-[14px] grid grid-flow-dense grid-cols-1 gap-[14px] sm:grid-cols-2 sm:auto-rows-[calc(50cqw_-_7px)] lg:grid-cols-4 lg:auto-rows-[calc(25cqw_-_10.5px)]">
         <PageIntroCard
           eyebrow="Selected works"
@@ -56,7 +54,7 @@ export default async function WorksPage({ searchParams }) {
           }
         />
 
-        <article className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-center gap-[18px] overflow-hidden rounded-[12px] bg-[var(--card)] p-5 sm:col-span-2">
+        {/* <article className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-center gap-[18px] overflow-hidden rounded-[12px] bg-[var(--card)] p-5 sm:col-span-2">
           <form
             className="grid grid-cols-1 items-end gap-2.5 sm:grid-cols-[minmax(0,1fr)_auto]"
             action="/works"
@@ -106,14 +104,14 @@ export default async function WorksPage({ searchParams }) {
               </Link>
             ))}
           </div>
-        </article>
+        </article> */}
 
         {projects.length ? (
           projects.map((project, index) => (
             <ProjectCard
               key={project.id || project.slug}
               project={project}
-              variant={index % 5 === 4 ? "wide" : "tall"}
+              variant={index % 5 === 4 ? "wide" : "wide"}
             />
           ))
         ) : (

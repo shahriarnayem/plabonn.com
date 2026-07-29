@@ -102,7 +102,7 @@ Card ratios come from grid spans instead of fixed card widths or heights:
 - Blog card markup: `src/components/cards/portfolio-cards.js` → `BlogCard`
 - Blog listing featured article: `src/app/blog/page.js`
 - Single blog page and right sidebar: `src/app/blog/[slug]/page.js`
-- Blog featured image field: Dashboard → Blog → Cover image URL
+- Blog featured image field: Dashboard → Blog → Cover image upload
 - Missing cover images are backfilled from the local placeholder images without replacing images you already selected.
 
 ## Contact form
@@ -111,3 +111,31 @@ Card ratios come from grid spans instead of fixed card widths or heights:
 - Submission API: `src/app/api/contact/route.js`
 - Saved collection: `contactMessages`
 - Test MongoDB before deployment with: `npm run db:check`
+
+## Homepage technology image cards
+
+- Frontend card component: `src/components/cards/portfolio-cards.js` → `TechCard`
+- Homepage placement: `src/app/page.js`
+- Dashboard editor: `src/components/dashboard/homepage-editor.js` → Hero technology images
+- Dashboard route: `/dashboard/hero`
+- Stored in MongoDB: `homepage.techCards`
+- Default image files: `public/placeholders/tech-wordpress.svg`, `tech-elementor.svg`, and `tech-crocoblock.svg`
+
+Each technology card is rendered as a full-bleed image, like the portrait card. Its image, label, alt text, and link can be changed from Dashboard → Hero. Images are uploaded directly to MongoDB GridFS; there are no image URL input fields.
+
+## Contact form layout
+
+- Page layout: `src/app/contact/page.js`
+- Form fields and client submission: `src/components/forms/contact-form.js`
+- MongoDB submission route: `src/app/api/contact/route.js`
+
+The form card uses natural content height, so the message field, consent checkbox, submit button, and response message remain visible.
+
+
+## Upload-only image fields
+
+- Reusable upload controls: `src/components/dashboard/image-upload-field.js`
+- Single images use `ImageUploadField`.
+- Project galleries and content galleries use `GalleryUploadField`.
+- Homepage, blog, works, reviews, page SEO, branding, favicon, block images, and galleries are upload-only.
+- Image references are stored as GridFS media paths. Image URL input fields and image-specific URL validation have been removed.
