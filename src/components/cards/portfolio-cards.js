@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/icon";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getPostFeaturedImage } from "@/lib/utils";
 
 function highlightText(text = "", words = []) {
   if (!words.length) return text;
@@ -124,11 +124,13 @@ export function TechCard({ name, label, href }) {
   return (
     <Link
       href={href || "/services"}
-      className={`relative col-span-1 row-span-1 flex min-w-0 flex-col items-center justify-center gap-3.5 overflow-hidden rounded-[12px] bg-[var(--card)] text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${iconColor}`}
+      className={`relative col-span-1 row-span-1 flex min-h-[220px] min-w-0 flex-col items-center justify-center gap-[16px] overflow-hidden rounded-[12px] bg-[var(--card)] p-5 text-[14px] font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${iconColor}`}
       aria-label={`${label} services`}
     >
-      <Icon name={name} size={52} />
-      <span className="text-[var(--text-soft)]">{label}</span>
+      <span className="grid h-[54px] w-[54px] place-items-center">
+        <Icon name={name} size={48} />
+      </span>
+      <span className="leading-none text-[var(--text)]">{label}</span>
     </Link>
   );
 }
@@ -247,27 +249,36 @@ export function CtaCard({ homepage }) {
 }
 
 export function BlogCard({ post }) {
+  const image = getPostFeaturedImage(post);
+
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="relative col-span-1 row-span-1 flex min-h-[190px] min-w-0 flex-col overflow-hidden rounded-[12px] bg-[var(--card)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+      className=" gap-4 p-2 relative col-span-1 row-span-1 flex h-full min-h-[264px] min-w-0 flex-col overflow-hidden rounded-[12px] bg-[var(--card)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
     >
-      <div
-        className="grid min-h-[112px] flex-1 place-items-center text-white"
-        style={{ backgroundColor: post.iconColor || "#9a000f" }}
-      >
-        <Icon name={post.icon || "file"} size={38} />
+      <div className="w-full overflow-hidden bg-[var(--card-soft)]">
+        <img
+          className="h-full w-full object-cover rounded-[4px]"
+          src={image}
+          alt={post.title}
+          width="1200"
+          height="900"
+          loading="lazy"
+        />
       </div>
-      <div className="grid gap-2.5 p-3">
-        <p className="m-0 text-xs font-semibold uppercase leading-[1.45]">
+      <div className="flex-1 content-between">
+        <p
+          className="lowercase mx-2 overflow-hidden text-[18px] font-semibold leading-[1.45]"
+          style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}
+        >
           {post.title}
         </p>
-        <span className="text-xs uppercase text-[var(--text-faint)]">
+        {/* <span className="text-xs uppercase text-[var(--text-faint)]">
           {post.category
             ? String(post.category).replaceAll("-", " ")
             : "Article"}
           {post.publishedAt ? ` · ${formatDate(post.publishedAt)}` : ""}
-        </span>
+        </span> */}
       </div>
     </Link>
   );

@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PublicShell } from "@/components/layout/public-shell";
-import { Breadcrumbs } from "@/components/content/breadcrumbs";
 import { BlocksRenderer } from "@/components/content/blocks-renderer";
 import { BlogCard } from "@/components/cards/portfolio-cards";
+import { Icon } from "@/components/icon";
 import { getAdjacent, getBySlug, getPublished } from "@/lib/data/content";
 import { absoluteUrl, buildMetadata, jsonLd } from "@/lib/seo";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getPostFeaturedImage } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -26,14 +26,13 @@ export default async function BlogDetailPage({ params }) {
   const post = await getBySlug("posts", slug);
   if (!post) notFound();
 
-  const [adjacent, related] = await Promise.all([
+  const [adjacent, related, recentPosts] = await Promise.all([
     getAdjacent("posts", post),
     getPublished("posts", { limit: 4, category: post.category }),
+    getPublished("posts", { limit: 6 }),
   ]);
-  const headings = (post.content || []).filter(
-    (block) => block.type === "heading" && block.data?.text,
-  );
   const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const coverImage = getPostFeaturedImage(post);
 
   return (
     <PublicShell>
@@ -46,80 +45,98 @@ export default async function BlogDetailPage({ params }) {
           description: post.excerpt,
           datePublished: post.publishedAt,
           dateModified: post.updatedAt || post.publishedAt,
-          image: absoluteUrl(post.coverImage, base),
+          image: absoluteUrl(coverImage, base),
           author: { "@type": "Person", name: "shahriarr." },
           mainEntityOfPage: `${base}/blog/${post.slug}`,
         })}
       />
-      <Breadcrumbs
-        items={[
-          { label: "Blog", href: "/blog" },
-          { label: post.title },
-        ]}
-      />
-
       <article className="grid gap-[14px]">
-        <header className="relative overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(30px,6vw,70px)]">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.04em] text-[var(--text-soft)]">
-            {String(post.category || "Article").replaceAll("-", " ")} ·{" "}
-            {formatDate(post.publishedAt)} · {post.readingTime || 5} min read
-          </p>
-          <h1 className="mb-4 max-w-[980px] text-[clamp(24px,4vw,32px)] font-bold uppercase leading-[1.16] tracking-[-0.03em]">
-            {post.title}
-          </h1>
-          <p className="max-w-[750px] text-base text-[var(--text-soft)]">
-            {post.excerpt}
-          </p>
-          <div className="mt-5 flex flex-wrap gap-1.5">
-            {(post.tags || []).map((tag) => (
-              <span
-                className="inline-flex rounded-full bg-[var(--card-soft)] px-2 py-1.5 text-xs leading-none text-[var(--text-soft)]"
-                key={tag}
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
-        </header>
+        <div className="grid items-start gap-[14px] lg:grid-cols-[minmax(0,1fr)_310px]">
+          <div className="relative overflow-hidden rounded-[12px] bg-[var(--card)]">
+            <div className="h-[240px] overflow-hidden bg-[var(--card-soft)] sm:h-[320px] lg:h-[420px]">
+              <img
+                className="h-full w-full object-cover"
+                src={coverImage}
+                alt={post.title}
+                width="1600"
+                height="900"
+                loading="eager"
+              />
+            </div>
 
-        <div className="grid items-start gap-[14px] lg:grid-cols-[260px_minmax(0,1fr)]">
-          <aside className="relative rounded-[12px] bg-[var(--card)] p-[22px] lg:sticky lg:top-[86px]">
-            <p className="mb-3 text-xs font-bold lowercase tracking-[0.04em]">
-              on this page.
-            </p>
-            {headings.length ? (
-              <ol className="m-0 grid gap-3 pl-5 text-xs text-[var(--text-soft)]">
-                {headings.map((heading, index) => (
-                  <li key={`${heading.data.text}-${index}`}>{heading.data.text}</li>
+            <div className="p-[clamp(20px,4vw,34px)]">
+              <p className="mb-3 text-xs font-bold uppercase tracking-[0.04em] text-[var(--text-soft)]">
+                {String(post.category || "Article").replaceAll("-", " ")} · {formatDate(post.publishedAt)} · {post.readingTime || 5} min read
+              </p>
+              <h1 className="mb-4 max-w-[980px] text-[clamp(24px,4vw,32px)] font-bold lowercase leading-[1.16] tracking-[-0.03em]">
+                {post.title}
+              </h1>
+              <p className="max-w-[760px] text-sm text-[var(--text-soft)] sm:text-base">
+                {post.excerpt}
+              </p>
+
+              {(post.tags || []).length ? (
+                <div className="mt-5 flex flex-wrap gap-1.5">
+                  {(post.tags || []).map((tag) => (
+                    <span
+                      className="inline-flex rounded-full bg-[var(--card-soft)] px-2 py-1.5 text-xs leading-none text-[var(--text-soft)]"
+                      key={tag}
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+
+              <div className="mt-7">
+                <BlocksRenderer blocks={post.content || []} />
+              </div>
+            </div>
+          </div>
+
+          <aside className="grid gap-[14px] lg:sticky lg:top-[86px]">
+            <div className="rounded-[12px] bg-[var(--card)] p-[10px]">
+              <form action="/blog" className="relative">
+                <input
+                  className="h-[44px] w-full rounded-[8px] bg-[var(--card-soft)] pl-3 pr-10 text-xs text-[var(--text)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+                  type="search"
+                  name="search"
+                  placeholder="Type to start searching..."
+                  aria-label="Search blog articles"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-2 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-[6px] bg-[var(--page)] text-[var(--text)] transition-colors duration-150 hover:bg-[var(--accent)] hover:text-white"
+                  aria-label="Search"
+                >
+                  <Icon name="search" size={14} />
+                </button>
+              </form>
+            </div>
+
+            <div className="grid gap-[7px]">
+              {recentPosts
+                .filter((item) => item.slug !== post.slug)
+                .slice(0, 6)
+                .map((item) => (
+                  <Link
+                    key={item.id || item.slug}
+                    href={`/blog/${item.slug}`}
+                    className="flex min-h-[76px] flex-col justify-between rounded-[12px] bg-[var(--card)] px-[15px] py-[12px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+                  >
+                    <p
+                      className="text-[12px] font-bold lowercase leading-[1.35] text-[var(--text)]"
+                      style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}
+                    >
+                      {item.title}
+                    </p>
+                    <p className="mt-2 text-[12px] leading-none text-[var(--text-faint)]">
+                      plabonn · {formatDate(item.publishedAt)}
+                    </p>
+                  </Link>
                 ))}
-              </ol>
-            ) : (
-              <p className="text-xs text-[var(--text-soft)]">A focused reading guide.</p>
-            )}
-            <div className="mt-6 flex flex-wrap gap-2.5 pt-[18px]">
-              <span className="w-full text-xs uppercase text-[var(--text-faint)]">
-                Share
-              </span>
-              <a
-                className="rounded-md text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${base}/blog/${post.slug}`)}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                LinkedIn
-              </a>
-              <a
-                className="rounded-md text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
-                href={`mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent(`${base}/blog/${post.slug}`)}`}
-              >
-                Email
-              </a>
             </div>
           </aside>
-
-          <div className="relative overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(28px,5vw,70px)]">
-            <BlocksRenderer blocks={post.content || []} />
-          </div>
         </div>
 
         <nav
@@ -151,7 +168,7 @@ export default async function BlogDetailPage({ params }) {
         </nav>
 
         <section className="mt-[18px]">
-          <h2 className="mb-3.5 text-xl font-bold uppercase tracking-[-0.03em]">
+          <h2 className="mb-3.5 text-xl font-bold lowercase tracking-[-0.03em]">
             Related articles
           </h2>
           <div className="grid grid-flow-dense grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-4">

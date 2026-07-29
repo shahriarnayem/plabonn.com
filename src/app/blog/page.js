@@ -11,7 +11,7 @@ import {
   getTags,
 } from "@/lib/data/content";
 import { buildMetadata } from "@/lib/seo";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getPostFeaturedImage } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -119,9 +119,9 @@ export default async function BlogPage({ searchParams }) {
         {featured ? (
           <Link
             href={`/blog/${featured.slug}`}
-            className="relative col-span-1 row-span-1 grid min-h-[260px] min-w-0 grid-cols-1 overflow-hidden rounded-[12px] bg-[var(--card)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:col-span-2 lg:col-span-4 lg:grid-cols-[1fr_260px]"
+            className="relative col-span-1 row-span-1 grid min-h-[260px] min-w-0 grid-cols-1 overflow-hidden rounded-[12px] bg-[var(--card)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] sm:col-span-2 lg:col-span-4 lg:grid-cols-[1fr_300px]"
           >
-            <div className="flex flex-col items-start justify-center p-8">
+            <div className="order-2 flex flex-col items-start justify-center p-8 lg:order-1">
               <p className="mb-3 text-xs font-bold uppercase tracking-[0.04em] text-[var(--text-soft)]">
                 Featured article · {formatDate(featured.publishedAt)}
               </p>
@@ -134,11 +134,15 @@ export default async function BlogPage({ searchParams }) {
                 <Icon name="arrow" size={15} />
               </span>
             </div>
-            <div
-              className="grid min-h-[180px] place-items-center text-white"
-              style={{ backgroundColor: featured.iconColor || "#9a000f" }}
-            >
-              <Icon name={featured.icon || "file"} size={62} />
+            <div className="order-1 h-[240px] overflow-hidden bg-[var(--card-soft)] lg:order-2 lg:h-full">
+              <img
+                className="h-full w-full object-cover"
+                src={getPostFeaturedImage(featured)}
+                alt={featured.title}
+                width="1200"
+                height="900"
+                loading="eager"
+              />
             </div>
           </Link>
         ) : null}

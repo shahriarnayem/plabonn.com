@@ -64,7 +64,7 @@ export function SiteHeader({ settings, navigation }) {
               href={item.url}
               className={`rounded-md text-[18px] font-semibold transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] lg:text-base ${
                 active
-                  ? "text-white"
+                  ? "text-[var(--accent)]"
                   : "text-[var(--text-soft)] hover:text-[var(--text)]"
               }`}
               onClick={() => setOpen(false)}

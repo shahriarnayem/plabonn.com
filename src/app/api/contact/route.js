@@ -1,14 +1,28 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
-import { getDb } from "@/lib/mongodb";
+import { getDb, hasMongoConfiguration } from "@/lib/mongodb";
 import { checkRateLimit } from "@/lib/rate-limit";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 function clean(value, max = 1000) {
   return String(value || "").trim().slice(0, max);
 }
 
 export async function POST(request) {
-  const forwarded = request.headers.get("x-forwarded-for") || "unknown";
+  if (!hasMongoConfiguration() && process.env.NODE_ENV === "production") {
+    return NextResponse.json(
+      { message: "The contact service is temporarily unavailable. Please use the email address shown on this page." },
+      { status: 503 },
+    );
+  }
+
+  const forwarded =
+    request.headers.get("x-forwarded-for") ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
   const ip = forwarded.split(",")[0].trim();
   const rate = checkRateLimit(`contact:${ip}`, { limit: 4, windowMs: 10 * 60_000 });
   if (!rate.allowed) return NextResponse.json({ message: "Too many attempts. Please wait and try again." }, { status: 429 });
@@ -34,7 +48,7 @@ export async function POST(request) {
 
   try {
     const db = await getDb();
-    await db.collection("contactMessages").insertOne({
+    const result = await db.collection("contactMessages").insertOne({
       fullName,
       email,
       phone: clean(body.phone, 80),
@@ -46,10 +60,24 @@ export async function POST(request) {
       read: false,
       ipHash: createHash("sha256").update(`${ip}:${process.env.BETTER_AUTH_SECRET || "portfolio"}`).digest("hex"),
       createdAt: new Date(),
+      source: "website-contact-form",
+      userAgent: clean(request.headers.get("user-agent"), 500),
       updatedAt: new Date(),
     });
-    return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json({ message: "The message could not be saved. Please try again shortly." }, { status: 500 });
+
+    if (!result.acknowledged) {
+      throw new Error("MongoDB did not acknowledge the contact message.");
+    }
+
+    return NextResponse.json(
+      { ok: true, message: "Thank you. Your project enquiry has been received." },
+      { status: 201 },
+    );
+  } catch (error) {
+    console.error("Contact form submission failed:", error);
+    return NextResponse.json(
+      { message: "The message could not be saved. Please try again shortly or contact me by email." },
+      { status: 500 },
+    );
   }
 }

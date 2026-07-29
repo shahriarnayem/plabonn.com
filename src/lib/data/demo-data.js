@@ -389,7 +389,7 @@ export const posts = [
     title: "How to Start a WordPress Blog in 2026",
     slug: "how-to-start-a-wordpress-blog-2026",
     excerpt: "A practical step-by-step guide to planning, building and launching a WordPress blog that stays manageable.",
-    coverImage: "",
+    coverImage: "/placeholders/project-1.png",
     icon: "currency",
     iconColor: "#650044",
     content: articleBlocks("A successful blog starts with clear decisions about audience, structure and publishing workflow before themes or plugins are installed.", [
@@ -409,7 +409,7 @@ export const posts = [
     title: "Common WordPress Errors and How to Fix Them",
     slug: "common-wordpress-errors-and-how-to-fix-them",
     excerpt: "A calm troubleshooting process for the WordPress issues that appear most often.",
-    coverImage: "",
+    coverImage: "/placeholders/project-2.png",
     icon: "refresh",
     iconColor: "#d86b0c",
     content: articleBlocks("Most WordPress problems become easier when you isolate the cause instead of changing several things at once.", [
@@ -429,7 +429,7 @@ export const posts = [
     title: "How to Secure Your WordPress Site from Hackers",
     slug: "secure-wordpress-site-from-hackers",
     excerpt: "Foundational steps that reduce avoidable WordPress security risks.",
-    coverImage: "",
+    coverImage: "/placeholders/project-3.png",
     icon: "shield",
     iconColor: "#050505",
     content: articleBlocks("Security is not one plugin. It is a collection of sensible habits applied consistently across hosting, access and maintenance.", [
@@ -449,7 +449,7 @@ export const posts = [
     title: "WooCommerce vs Shopify: Which Is Better for E-commerce?",
     slug: "woocommerce-vs-shopify",
     excerpt: "A practical comparison based on ownership, flexibility, maintenance and growth.",
-    coverImage: "",
+    coverImage: "/placeholders/project-4.png",
     icon: "cart",
     iconColor: "#10ad45",
     content: articleBlocks("The best platform is the one that fits the business model, internal skills and long-term operational needs.", [
@@ -469,7 +469,7 @@ export const posts = [
     title: "WordPress.com vs WordPress.org: Which One Should You Choose?",
     slug: "wordpress-com-vs-wordpress-org",
     excerpt: "Understand the difference before choosing the foundation for your website.",
-    coverImage: "",
+    coverImage: "/placeholders/project-5.png",
     icon: "edit",
     iconColor: "#d74428",
     content: articleBlocks("The names are similar, but the ownership model and level of control are very different.", [
@@ -489,7 +489,7 @@ export const posts = [
     title: "The Future of WordPress: Gutenberg and Full Site Editing",
     slug: "future-of-wordpress-gutenberg-full-site-editing",
     excerpt: "How block-based editing is changing the way WordPress websites are built and managed.",
-    coverImage: "",
+    coverImage: "/placeholders/project-6.png",
     icon: "elementor",
     iconColor: "#ef4de9",
     content: articleBlocks("WordPress is moving toward a more unified block-based editing experience across content and site templates.", [
@@ -509,7 +509,7 @@ export const posts = [
     title: "How to Speed Up Your WordPress Site",
     slug: "how-to-speed-up-wordpress-site",
     excerpt: "Five practical areas to review before adding another optimization plugin.",
-    coverImage: "",
+    coverImage: "/placeholders/project-1.png",
     icon: "speed",
     iconColor: "#c90e21",
     content: articleBlocks("Performance work is most effective when it starts with the largest real bottlenecks rather than a long list of generic tweaks.", [
@@ -529,7 +529,7 @@ export const posts = [
     title: "Best Free WordPress Themes for Small Businesses",
     slug: "best-free-wordpress-themes-small-businesses",
     excerpt: "What to evaluate when choosing a lightweight theme for a business website.",
-    coverImage: "",
+    coverImage: "/placeholders/project-2.png",
     icon: "search",
     iconColor: "#ad0056",
     content: articleBlocks("A theme should support the website’s structure without adding unnecessary complexity or locking you into a fragile setup.", [
@@ -549,7 +549,7 @@ export const posts = [
     title: "Five Must-Have WordPress Plugins for Beginners",
     slug: "must-have-wordpress-plugins-beginners",
     excerpt: "Build a small, purposeful plugin stack instead of installing everything recommended online.",
-    coverImage: "",
+    coverImage: "/placeholders/project-3.png",
     icon: "plug",
     iconColor: "#9847ef",
     content: articleBlocks("The right plugin stack depends on the website. The goal is to cover essential needs with the fewest reliable tools.", [
@@ -569,7 +569,7 @@ export const posts = [
     title: "How to Start a WordPress Blog: Setup Checklist",
     slug: "wordpress-blog-setup-checklist",
     excerpt: "A compact checklist for domains, hosting, content structure, SEO and launch readiness.",
-    coverImage: "",
+    coverImage: "/placeholders/project-4.png",
     icon: "wordpress",
     iconColor: "#0684a9",
     content: articleBlocks("A checklist reduces launch-day mistakes and makes it easier to hand the website over to another person later.", [
@@ -589,7 +589,7 @@ export const posts = [
     title: "Crocoblock Dynamic Content Without a Messy Dashboard",
     slug: "crocoblock-dynamic-content-clean-dashboard",
     excerpt: "A structure-first approach to dynamic listings, relationships and reusable templates.",
-    coverImage: "",
+    coverImage: "/placeholders/project-5.png",
     icon: "crocoblock",
     iconColor: "#2957c7",
     content: articleBlocks("Dynamic content becomes maintainable when the data model is planned before widgets are placed on a page.", [
@@ -609,7 +609,7 @@ export const posts = [
     title: "Elementor Responsive Design: A Better Workflow",
     slug: "elementor-responsive-design-workflow",
     excerpt: "How to build consistent desktop, tablet and mobile layouts without endless overrides.",
-    coverImage: "",
+    coverImage: "/placeholders/project-6.png",
     icon: "elementor",
     iconColor: "#e84dbc",
     content: articleBlocks("Responsive Elementor work becomes faster when the layout system is consistent before individual pages are refined.", [

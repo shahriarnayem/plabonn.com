@@ -105,8 +105,6 @@ export const resourceConfigs = {
       { name: "slug", label: "Slug", type: "slug", required: true },
       { name: "excerpt", label: "Excerpt", type: "textarea" },
       { name: "coverImage", label: "Cover image URL", type: "image" },
-      { name: "icon", label: "Card icon name", type: "text" },
-      { name: "iconColor", label: "Card icon color", type: "color", defaultValue: "#6656d9" },
       { name: "content", label: "Article blocks", type: "blocks" },
       { name: "category", label: "Category slug", type: "text" },
       { name: "tags", label: "Tag slugs", type: "list" },

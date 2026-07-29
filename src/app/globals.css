@@ -56,12 +56,20 @@ body {
   min-width: 320px;
   background: var(--page);
   color: var(--text);
+  font-family: var(--font-ibm-plex-mono), "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
 }
 
 button,
 input,
 select,
-textarea {
+textarea,
+pre,
+code,
+kbd,
+samp {
   font: inherit;
 }
 

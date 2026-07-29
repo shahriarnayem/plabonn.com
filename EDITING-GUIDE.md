@@ -96,3 +96,18 @@ Card ratios come from grid spans instead of fixed card widths or heights:
 - No card/image hover effects
 - Hover styles only on buttons and navigation controls
 - Simple dark palette: `#000000`, `#111111`, `#222222`, `#333333`
+
+## Blog images and single article layout
+
+- Blog card markup: `src/components/cards/portfolio-cards.js` → `BlogCard`
+- Blog listing featured article: `src/app/blog/page.js`
+- Single blog page and right sidebar: `src/app/blog/[slug]/page.js`
+- Blog featured image field: Dashboard → Blog → Cover image URL
+- Missing cover images are backfilled from the local placeholder images without replacing images you already selected.
+
+## Contact form
+
+- Form UI: `src/components/forms/contact-form.js`
+- Submission API: `src/app/api/contact/route.js`
+- Saved collection: `contactMessages`
+- Test MongoDB before deployment with: `npm run db:check`

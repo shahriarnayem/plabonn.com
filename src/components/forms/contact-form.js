@@ -14,26 +14,48 @@ export function ContactForm({ services = [], defaultService = "" }) {
     const payload = Object.fromEntries(new FormData(form).entries());
     payload.consent = payload.consent === "on";
 
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 15000);
+
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        credentials: "same-origin",
+        cache: "no-store",
+        signal: controller.signal,
         body: JSON.stringify(payload),
       });
-      const result = await response.json();
+
+      const contentType = response.headers.get("content-type") || "";
+      const result = contentType.includes("application/json")
+        ? await response.json()
+        : { message: await response.text() };
+
       if (!response.ok) {
         throw new Error(result.message || "Unable to send your message.");
       }
+
       form.reset();
+      const serviceField = form.elements.namedItem("service");
+      if (serviceField && defaultService) serviceField.value = defaultService;
+
       setState({
         status: "success",
-        message: "Thank you. Your project enquiry has been received.",
+        message: result.message || "Thank you. Your project enquiry has been received.",
       });
     } catch (error) {
-      setState({
-        status: "error",
-        message: error.message || "Something went wrong. Please try again.",
-      });
+      const message =
+        error?.name === "AbortError"
+          ? "The request took too long. Please check your connection and try again."
+          : error?.message || "Something went wrong. Please try again.";
+
+      setState({ status: "error", message });
+    } finally {
+      window.clearTimeout(timeout);
     }
   }
 

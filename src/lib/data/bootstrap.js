@@ -56,6 +56,30 @@ async function backfillSystemPageFields(collection) {
   if (operations.length) await collection.bulkWrite(operations, { ordered: false });
 }
 
+async function backfillPostCoverImages(collection) {
+  const operations = posts
+    .filter((post) => post.coverImage)
+    .map((post) => ({
+      updateOne: {
+        filter: {
+          slug: post.slug,
+          $or: [
+            { coverImage: { $exists: false } },
+            { coverImage: null },
+            { coverImage: "" },
+          ],
+        },
+        update: {
+          $set: { coverImage: post.coverImage, updatedAt: new Date() },
+        },
+      },
+    }));
+
+  if (operations.length) {
+    await collection.bulkWrite(operations, { ordered: false });
+  }
+}
+
 async function createIndexes(db) {
   await Promise.allSettled([
     db.collection("services").createIndex({ slug: 1 }, { unique: true }),
@@ -68,6 +92,8 @@ async function createIndexes(db) {
     db.collection("projects").createIndex({ status: 1, featured: 1, order: 1 }),
     db.collection("testimonials").createIndex({ status: 1, featured: 1, order: 1 }),
     db.collection("posts").createIndex({ status: 1, category: 1, publishedAt: -1 }),
+    db.collection("contactMessages").createIndex({ createdAt: -1 }),
+    db.collection("contactMessages").createIndex({ read: 1, createdAt: -1 }),
   ]);
 }
 
@@ -101,6 +127,7 @@ async function bootstrapDatabase() {
     insertMissing(db.collection("pages"), pages, (item) => ({ slug: item.slug })),
   ]);
   await backfillSystemPageFields(db.collection("pages"));
+  await backfillPostCoverImages(db.collection("posts"));
 
   const completed = await markerCollection.findOne({ key: markerKey });
   if (!completed) {
@@ -112,6 +139,8 @@ async function bootstrapDatabase() {
       insertMissing(db.collection("categories"), categories, (item) => ({ scope: item.scope, slug: item.slug })),
       insertMissing(db.collection("tags"), tags, (item) => ({ slug: item.slug })),
     ]);
+
+    await backfillPostCoverImages(db.collection("posts"));
 
     await markerCollection.updateOne(
       { key: markerKey },

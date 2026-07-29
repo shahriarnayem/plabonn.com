@@ -3,7 +3,7 @@ import { IBM_Plex_Mono } from "next/font/google";
 import { getSettings } from "@/lib/data/content";
 
 const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
   style: ["normal"],
   variable: "--font-ibm-plex-mono",
@@ -80,7 +80,7 @@ export default async function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className={`${ibmPlexMono.variable} ${ibmPlexMono.className} min-w-[320px] bg-[var(--page)] text-sm leading-[1.65] tracking-[-0.01em] text-[var(--text)] antialiased`}
+        className={`${ibmPlexMono.variable} ${ibmPlexMono.className} font-mono min-w-[320px] bg-[var(--page)] text-sm leading-[1.65] tracking-[-0.01em] text-[var(--text)] antialiased`}
       >
         <a
           className="fixed left-2.5 top-2.5 z-[10000] -translate-y-[160%] rounded-lg bg-[var(--accent)] px-3.5 py-2.5 text-xs font-semibold text-white focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-white"

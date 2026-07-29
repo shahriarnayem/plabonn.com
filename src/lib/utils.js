@@ -81,3 +81,22 @@ export function safeHexColor(value = "", fallback = "#6656d9") {
   const color = String(value || "").trim();
   return /^#[0-9a-f]{6}$/i.test(color) ? color : fallback;
 }
+
+
+const BLOG_FALLBACK_IMAGES = [
+  "/placeholders/project-1.png",
+  "/placeholders/project-2.png",
+  "/placeholders/project-3.png",
+  "/placeholders/project-4.png",
+  "/placeholders/project-5.png",
+  "/placeholders/project-6.png",
+];
+
+export function getPostFeaturedImage(post = {}) {
+  const direct = safeUrl(post.coverImage || post.featuredImage || "", { image: true });
+  if (direct) return direct;
+  const key = String(post.slug || post.title || post.id || "post");
+  const total = BLOG_FALLBACK_IMAGES.length;
+  const hash = Array.from(key).reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 1), 0);
+  return BLOG_FALLBACK_IMAGES[hash % total];
+}
