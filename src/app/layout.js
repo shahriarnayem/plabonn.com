@@ -1,14 +1,14 @@
 import "./globals.css";
 
 import Script from "next/script";
-import { IBM_Plex_Mono } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 import { getSettings } from "@/lib/data/content";
 
-const ibmPlexMono = IBM_Plex_Mono({
+const robotoMono = Roboto_Mono({
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
   style: ["normal"],
-  variable: "--font-ibm-plex-mono",
+  variable: "--font-roboto-mono",
   display: "swap",
   preload: true,
   fallback: [
@@ -182,8 +182,8 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`
-          ${ibmPlexMono.variable}
-          ${ibmPlexMono.className}
+          ${robotoMono.variable}
+          ${robotoMono.className}
           min-w-[320px]
           bg-[var(--page)]
           font-mono

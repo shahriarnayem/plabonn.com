@@ -3,20 +3,20 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-mono: var(--font-ibm-plex-mono), "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-mono: var(--font-roboto-mono), "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --color-brand: #9a000f;
   --color-brand-dark: #72000b;
 }
 
 :root {
   color-scheme: light;
-  --page: #f8f9fa;
-  --card: #e9ecef;
+  --page: #ffffff;
+  --card: #f6f6f6;
   --card-soft: #dee2e6;
   --card-strong: #ced4da;
-  --text: #212529;
-  --text-soft: #495057;
-  --text-faint: #6c757d;
+  --text: #111111;
+  --text-soft: #666666;
+  --text-faint: #666666;
   --accent: var(--accent-custom, #9a000f);
   --accent-hover: #72000b;
   --success: #2f7d55;
@@ -31,7 +31,7 @@ html.dark {
   --card-soft: #222222;
   --card-strong: #333333;
   --text: #f8f9fa;
-  --text-soft: #dee2e6;
+  --text-soft: #868893;
   --text-faint: #adb5bd;
   --accent-hover: #c31a2b;
   --success: #74c69d;
