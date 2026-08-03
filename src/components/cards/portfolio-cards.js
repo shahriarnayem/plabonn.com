@@ -23,9 +23,44 @@ function highlightText(text = "", words = []) {
   );
 }
 
+function PokeMeButton({
+  href = "/contact",
+  label = "POKE ME",
+}) {
+  return (
+    <Link
+      href={href}
+      className="group inline-flex w-fit items-stretch rounded-[20px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+    >
+      <span className="flex min-h-[38px] items-center justify-center rounded-l-[20px] rounded-r-[20px] bg-[var(--accent)] px-[22px] text-[12px] font-medium uppercase text-white">
+        {label}
+      </span>
+
+      <span className="flex h-[40px] w-[40px] items-center justify-center rounded-[20px] bg-[var(--accent)] text-white">
+        <svg
+          className="transition-transform duration-300 ease-out group-hover:rotate-45"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M7 17L17 7M9 7H17V15"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+    </Link>
+  );
+}
+
 export function HeroHeadingCard({ hero }) {
   return (
-    <article className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-between overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(20px,3vw,24px)] sm:col-span-2">
+    <article className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-end overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(20px,3vw,24px)] sm:col-span-2">
       <div>
         {/* {hero.eyebrow ? (
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.04em] text-[var(--text-soft)]">
@@ -38,24 +73,25 @@ export function HeroHeadingCard({ hero }) {
             {hero.availability}
           </span>
         ) : null} */}
-        <h1 className="mb-3.5 max-w-[780px] text-[clamp(20px,2.5vw,28px)] font-bold uppercase leading-[1.16] tracking-[-0.03em] text-[var(--text-soft)]">
+        <h1 className="mb-3.5 max-w-[780px] text-[clamp(20px,2.5vw,32px)] font-bold uppercase leading-[1.16] tracking-[-0.03em] text-[var(--text-soft)]">
           {highlightText(hero.heading, ["WordPress", "Elementor"])}
         </h1>
-        {hero.paragraph ? (
+        {/* {hero.paragraph ? (
           <p className="max-w-[58ch] text-[14px] text-[var(--text-soft)]">
             {hero.paragraph}
           </p>
-        ) : null}
+        ) : null} */}
       </div>
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-4">
-        <Link
+        {/* <Link
           className="inline-flex min-h-[38px] items-center justify-center gap-2.5 rounded-[7px] bg-[var(--accent)] px-3.5 py-2 text-xs font-bold uppercase tracking-[0.015em] text-white transition-colors duration-150 hover:bg-[var(--accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
           href={hero.ctaUrl || "/contact"}
         >
           {hero.ctaText || "Contact me"}
           <Icon name="arrow" size={15} />
-        </Link>
+        </Link> */}
+        <PokeMeButton href="/contact" label="POKE ME" />
         {/* {hero.availability ? (
           <span className="inline-flex items-center gap-2 text-xs uppercase text-[var(--text-faint)]">
             <i className="h-[7px] w-[7px] rounded-full bg-[var(--success)]" />
@@ -143,16 +179,16 @@ export function SectionHeadingCard({
   highlightWords = [],
 }) {
   return (
-    <article className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-between overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(20px,3vw,28px)] sm:col-span-2">
+    <article className="relative col-span-1 row-span-1 flex min-w-0 flex-col justify-between overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(20px,3vw,32px)] sm:col-span-2">
       <div>
-        <h2 className="mb-3.5 max-w-[780px] text-[clamp(20px,2.5vw,28px)] font-bold uppercase leading-[1.16] tracking-[-0.03em] text-[var(--text-soft)]">
+        <h2 className="mb-3.5 max-w-[780px] text-[clamp(20px,2.5vw,32px)] font-bold uppercase leading-[1.16] tracking-[-0.03em] text-[var(--text-soft)]">
           {highlightText(title, highlightWords)}
         </h2>
         {description ? (
           <p className="max-w-[58ch] text-sm text-[var(--text-soft)]">{description}</p>
         ) : null}
       </div>
-      {ctaText ? (
+      {/* {ctaText ? (
         <Link
           className="mt-6 inline-flex min-h-[38px] w-fit items-center justify-center gap-2.5 rounded-[7px] bg-[var(--accent)] px-3.5 py-2 text-xs font-bold uppercase tracking-[0.015em] text-white transition-colors duration-150 hover:bg-[var(--accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
           href={ctaUrl || "#"}
@@ -160,7 +196,8 @@ export function SectionHeadingCard({
           {ctaText}
           <Icon name="arrow" size={15} />
         </Link>
-      ) : null}
+      ) : null} */}
+      <PokeMeButton href={ctaUrl || "#"} label={ctaText} />
     </article>
   );
 }
@@ -312,7 +349,7 @@ export function ServiceCard({ service }) {
 export function StatCard({ value, label }) {
   return (
     <article className="gap-4 relative col-span-1 row-span-1 flex min-w-0 flex-col justify-center overflow-hidden rounded-[12px] bg-[var(--card)] p-6">
-      <strong className="text-[clamp(20px,3vw,28px)] leading-[1.16] tracking-[-0.03em]">
+      <strong className="text-[clamp(20px,3vw,32px)] leading-[1.16] tracking-[-0.03em]">
         {value}
       </strong>
       <span className="text-[14px] text-[var(--text-soft)]">{label}</span>
@@ -328,9 +365,9 @@ export function PageIntroCard({
 }) {
   return (
     <article
-      className={`relative flex min-w-0 flex-col justify-center items-center overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(20px,3vw,28px)] ${className}`}
+      className={`relative flex min-w-0 flex-col justify-center items-center overflow-hidden rounded-[12px] bg-[var(--card)] p-[clamp(20px,3vw,32px)] ${className}`}
     >
-      <h1 className="text-center mb-3.5 max-w-[850px] text-[clamp(20px,4vw,28px)] font-bold uppercase leading-[1.16] tracking-[-0.03em]">
+      <h1 className="text-center mb-3.5 max-w-[850px] text-[clamp(20px,4vw,32px)] font-bold uppercase leading-[1.16] tracking-[-0.03em]">
         {title}
       </h1>
       {/* {description ? (

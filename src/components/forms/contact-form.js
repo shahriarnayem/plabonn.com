@@ -70,10 +70,11 @@ export function ContactForm({ services = [], defaultService = "" }) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="grid gap-1.5">
-          <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
+          {/* <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
             Full name *
-          </span>
+          </span> */}
           <input
+            placeholder="Full name"
             className="w-full rounded-[8px] bg-[var(--card-soft)] px-3 py-2.5 text-sm text-[var(--text)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
             name="fullName"
             required
@@ -81,10 +82,11 @@ export function ContactForm({ services = [], defaultService = "" }) {
           />
         </label>
         <label className="grid gap-1.5">
-          <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
+          {/* <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
             Email address *
-          </span>
+          </span> */}
           <input
+            placeholder="Email address"
             className="w-full rounded-[8px] bg-[var(--card-soft)] px-3 py-2.5 text-sm text-[var(--text)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
             name="email"
             type="email"
@@ -92,28 +94,30 @@ export function ContactForm({ services = [], defaultService = "" }) {
           />
         </label>
         <label className="grid gap-1.5">
-          <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
+          {/* <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
             Phone
-          </span>
+          </span> */}
           <input
+            placeholder="Phone"
             className="w-full rounded-[8px] bg-[var(--card-soft)] px-3 py-2.5 text-sm text-[var(--text)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
             name="phone"
             type="tel"
           />
         </label>
         <label className="grid gap-1.5">
-          <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
+          {/* <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
             Company
-          </span>
+          </span> */}
           <input
+            placeholder="Company"
             className="w-full rounded-[8px] bg-[var(--card-soft)] px-3 py-2.5 text-sm text-[var(--text)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
             name="company"
           />
         </label>
         <label className="grid gap-1.5">
-          <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
+          {/* <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
             Service
-          </span>
+          </span> */}
           <select
             className="w-full cursor-pointer appearance-none rounded-[8px] bg-[var(--card-soft)] px-3 py-2.5 text-sm text-[var(--text)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
             name="service"
@@ -128,14 +132,14 @@ export function ContactForm({ services = [], defaultService = "" }) {
           </select>
         </label>
         <label className="grid gap-1.5">
-          <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
+          {/* <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
             Budget range
-          </span>
+          </span> */}
           <select
             className="w-full cursor-pointer appearance-none rounded-[8px] bg-[var(--card-soft)] px-3 py-2.5 text-sm text-[var(--text)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
             name="budget"
           >
-            <option value="">Select a range</option>
+            <option value="">Select a budget range</option>
             <option value="$500–$1,000">$500–$1,000</option>
             <option value="$1,000–$2,500">$1,000–$2,500</option>
             <option value="$2,500–$5,000">$2,500–$5,000</option>
@@ -145,9 +149,9 @@ export function ContactForm({ services = [], defaultService = "" }) {
       </div>
 
       <label className="grid gap-1.5">
-        <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
+        {/* <span className="text-xs font-semibold uppercase text-[var(--text-soft)]">
           Project message *
-        </span>
+        </span> */}
         <textarea
           className="w-full resize-y rounded-[8px] bg-[var(--card-soft)] px-3 py-2.5 text-sm text-[var(--text)] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
           name="message"

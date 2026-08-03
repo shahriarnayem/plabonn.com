@@ -38,17 +38,20 @@ export default async function ServiceDetailPage({ params }) {
           url: `${base}/services/${service.slug}`,
         })}
       />
+      {/* <Breadcrumbs
+        items={[
+          { label: "Services", href: "/services" },
+          { label: service.title },
+        ]}
+      /> */}
+      <section className="mb-[14px] grid grid-flow-dense grid-cols-1 gap-[14px] sm:grid-cols-2 sm:auto-rows-[calc(50cqw_-_7px)] lg:grid-cols-4 lg:auto-rows-[calc(25cqw_-_10.5px)]">
+        <header className="relative col-span-1 row-span-1 min-w-0 overflow-hidden rounded-[12px] bg-[var(--card)] p-[30px] sm:col-span-2">
       <Breadcrumbs
         items={[
           { label: "Services", href: "/services" },
           { label: service.title },
         ]}
       />
-      <section className="mb-[14px] grid grid-flow-dense grid-cols-1 gap-[14px] sm:grid-cols-2 sm:auto-rows-[calc(50cqw_-_7px)] lg:grid-cols-4 lg:auto-rows-[calc(25cqw_-_10.5px)]">
-        <header className="relative col-span-1 row-span-1 min-w-0 overflow-hidden rounded-[12px] bg-[var(--card)] p-[30px] sm:col-span-2">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.04em] text-[var(--text-soft)]">
-            Service
-          </p>
           <h1 className="text-[clamp(24px,4vw,32px)] font-bold uppercase leading-[1.16] tracking-[-0.03em]">
             {service.title}
           </h1>

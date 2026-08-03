@@ -1,5 +1,5 @@
 import { PublicShell } from "@/components/layout/public-shell";
-import { Breadcrumbs } from "@/components/content/breadcrumbs";
+// import { Breadcrumbs } from "@/components/content/breadcrumbs";
 import { CtaCard, PageIntroCard, ServiceCard } from "@/components/cards/portfolio-cards";
 import { getHomepage, getPageBySlug, getPublished } from "@/lib/data/content";
 import { buildMetadata } from "@/lib/seo";
@@ -24,7 +24,7 @@ export default async function ServicesPage() {
 
   return (
     <PublicShell>
-      <Breadcrumbs items={[{ label: "Services" }]} />
+      {/* <Breadcrumbs items={[{ label: "Services" }]} /> */}
       <section className="mb-[14px] grid grid-flow-dense grid-cols-1 gap-[14px] sm:grid-cols-2 sm:auto-rows-[calc(50cqw_-_7px)] lg:grid-cols-4 lg:auto-rows-[calc(25cqw_-_10.5px)]">
         <PageIntroCard
           eyebrow="Services"

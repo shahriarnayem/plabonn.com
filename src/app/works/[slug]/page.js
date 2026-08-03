@@ -42,19 +42,22 @@ export default async function ProjectPage({ params }) {
           url: `${base}/works/${project.slug}`,
         })}
       />
+      {/* <Breadcrumbs
+        items={[
+          { label: "Works", href: "/works" },
+          { label: project.title },
+        ]}
+      /> */}
+
+      <article>
+        <section className="mb-[14px] grid grid-flow-dense grid-cols-1 gap-[14px] sm:grid-cols-2 sm:auto-rows-[calc(50cqw_-_7px)] lg:grid-cols-4 lg:auto-rows-[calc(25cqw_-_10.5px)]">
+          <header className="relative col-span-1 row-span-1 min-w-0 overflow-hidden rounded-[12px] bg-[var(--card)] p-[30px] sm:col-span-2">
       <Breadcrumbs
         items={[
           { label: "Works", href: "/works" },
           { label: project.title },
         ]}
       />
-
-      <article>
-        <section className="mb-[14px] grid grid-flow-dense grid-cols-1 gap-[14px] sm:grid-cols-2 sm:auto-rows-[calc(50cqw_-_7px)] lg:grid-cols-4 lg:auto-rows-[calc(25cqw_-_10.5px)]">
-          <header className="relative col-span-1 row-span-1 min-w-0 overflow-hidden rounded-[12px] bg-[var(--card)] p-[30px] sm:col-span-2">
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.04em] text-[var(--text-soft)]">
-              {String(project.category || "Project").replaceAll("-", " ")}
-            </p>
             <h1 className="mb-3 text-[clamp(24px,4vw,32px)] font-bold uppercase leading-[1.16] tracking-[-0.03em]">
               {project.title}
             </h1>
